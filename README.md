@@ -1,5 +1,4 @@
 # Cosmos
--# discord bot
 
 ## Important Notes
 
