@@ -18,6 +18,9 @@ const data = new SlashCommandSubcommandBuilder()
 const handler = async (interaction) => {
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
+    if (!interaction.inGuild())
+        return interaction.editReply({ content: "❌ This command can only be used in servers." });
+
     // data
     const userData = await getCommandUserData(interaction);
     if (!userData) return; const { user, member, commandUser, botMember } = userData;
@@ -25,8 +28,6 @@ const handler = async (interaction) => {
     const nickname = interaction.options.getString('nickname') || null;
 
     // permissions
-    if (!interaction.inGuild())
-        return interaction.editReply({ content: "❌ This command can only be used in servers." });
     if (!hasPermission(commandUser, PermissionFlagsBits.ManageNicknames))
         return interaction.editReply({ content: "❌ You need `Manage Nicknames` permission."});
     if (!botHasPermission(interaction.client, interaction.guild, PermissionFlagsBits.ManageNicknames))

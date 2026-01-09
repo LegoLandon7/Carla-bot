@@ -19,6 +19,9 @@ const data = new SlashCommandSubcommandBuilder()
 const handler = async (interaction) => {
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
+    if (!interaction.inGuild())
+        return interaction.editReply({ content: "❌ This command can only be used in servers." });
+
     // data
     const userData = await getCommandUserData(interaction);
     if (!userData) return; const { user, member, commandUser, botMember } = userData;
@@ -26,8 +29,6 @@ const handler = async (interaction) => {
     const reason = interaction.options.getString('reason') || 'No reason provided';
 
     // permissions
-    if (!interaction.inGuild())
-        return interaction.editReply({ content: "❌ This command can only be used in servers." });
     if (!hasPermission(interaction.member, PermissionFlagsBits.BanMembers))
         return interaction.editReply({ content: "❌ You need `Ban Members` permission."});
     if (!botHasPermission(interaction.client, interaction.guild, PermissionFlagsBits.BanMembers))
