@@ -17,7 +17,7 @@ const handler = async (interaction) => {
     const memory = (Math.round(process.memoryUsage().rss / 1024 / 1024)) + "MB";
 
     const avatarURL = user.displayAvatarURL({ size: 1024, dynamic: true });
-    const gitURL = 'https://github.com/LegoLandon7/Cosmos';
+    const gitURL = 'https://github.com/LegoLandon7/Carla-bot';
     const inviteURL = 'https://discord.com/oauth2/authorize?client_id=1445762036087914677&permissions=8&integration_type=0&scope=bot';
     const dateMade = dateToDiscordTimestamp(user.createdAt);
 
