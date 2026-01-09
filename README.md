@@ -50,8 +50,6 @@ Make sure the bot has the `admin` & `bot` permissions to be safe.
 
 Also make sure to let the bot allow all presences such as the `Presence Intent`, `Server Members Intent`, and `Message Content Intent`
 
-To run the bot in dev mode run the `npm dev` command
-
 To deploy commands then start the bot at the same time then run the `npm run deploy-start`
 
 
