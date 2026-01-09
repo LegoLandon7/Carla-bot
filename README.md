@@ -18,9 +18,14 @@ APP_ID=[]
 PUBLIC_KEY=[]
 
 DEV_IDS=[] (array)
+
+OPENAI_KEY=[]
+SEARCH_ENGINE_KEY=[]
+SEARCH_ENGINE_ID=[]
 ```
 
 Then make sure the arguments replacing the [] brackets are the actual data needed.
+Some commands may not work if you dont have the google engine keys or openai keys.
 
 ### NEXT: 
 
@@ -44,8 +49,6 @@ This command refreshes all slash commands.
 Make sure the bot has the `admin` & `bot` permissions to be safe.
 
 Also make sure to let the bot allow all presences such as the `Presence Intent`, `Server Members Intent`, and `Message Content Intent`
-
-To run the bot in dev mode run the `npm dev` command
 
 To deploy commands then start the bot at the same time then run the `npm run deploy-start`
 
