@@ -5,7 +5,7 @@ const CSE_ID = process.env.SEARCH_ENGINE_ID;
 
 async function googleSearch(query, num = 1, description = true) {
     try {
-        const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CSE_ID}&q=${encodeURIComponent(query)}&num=${num}`;
+        const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CSE_ID}&q=${encodeURIComponent(query)}&num=${num}&safe=active`;
         const res = await fetch(url);
         const data = await res.json();
 
@@ -16,7 +16,6 @@ async function googleSearch(query, num = 1, description = true) {
             ? `- [${item.title}](${item.link})${description ? `\n-# ${item.snippet}`: ''}`
             : `- [${item.title}](${item.link})`
         ).join('\n\n');
-
     } catch (err) {
         return "⚠️ Something went wrong";
     }
