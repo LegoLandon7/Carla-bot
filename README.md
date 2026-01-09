@@ -18,9 +18,14 @@ APP_ID=[]
 PUBLIC_KEY=[]
 
 DEV_IDS=[] (array)
+
+OPENAI_KEY=[]
+SEARCH_ENGINE_KEY=[]
+SEARCH_ENGINE_ID=[]
 ```
 
 Then make sure the arguments replacing the [] brackets are the actual data needed.
+Some commands may not work if you dont have the google engine keys or openai keys.
 
 ### NEXT: 
 
