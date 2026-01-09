@@ -22,14 +22,12 @@ const handler = async (interaction) => {
         return interaction.editReply({ content: "❌ This command can only be used in servers." });
 
     // data
-    const userData = await getCommandUserData(interaction);
-    if (!userData) return; const { user, member, commandUser, botMember } = userData;
 
     const target_channel = interaction.options.getChannel('target_channel');
     const message = interaction.options.getString('message');
 
     // permissions
-    if (!hasPermission(commandUser, PermissionFlagsBits.ManageMessages))
+    if (!hasPermission(interaction.member, PermissionFlagsBits.ManageMessages))
         return interaction.editReply({ content: "❌ You need `Manage Messages` permission."});
 
     // echo
