@@ -1,0 +1,44 @@
+const { SlashCommandSubcommandBuilder, EmbedBuilder, MessageFlags, PermissionFlagsBits } = require('discord.js');
+const { googleSearch } = require('../../../search_engine.js');
+
+const data = new SlashCommandSubcommandBuilder()
+    .setName('search')
+    .setDescription('Search google')
+    .addStringOption(option => option
+        .setName('query')
+        .setDescription('The query to search')
+        .setRequired(true))
+    .addNumberOption(option => option
+        .setName('amount')
+        .setDescription('The amount to search')
+        .setRequired(false))
+    .addBooleanOption(option => option
+        .setName('description')
+        .setDescription('Show website description (set to false on amounts > 1)')
+        .setRequired(false))
+    .addBooleanOption(option => option
+        .setName('embed')
+        .setDescription('Show rich embeds')
+        .setRequired(false));
+
+const handler = async (interaction) => {
+    await interaction.deferReply();
+
+    let amount = interaction.options.getNumber('amount') || 1;
+    if (amount < 1) amount = 1;
+    if (amount > 10) amount = 10;
+
+    const query = interaction.options.getString('query');
+    let description = interaction.options.getBoolean('description');
+    if (amount != 1) description = false;
+
+    const response = await googleSearch(query, amount, description);
+
+    const embed = interaction.options.getBoolean('embed');
+    await interaction.editReply( embed 
+        ? { content: response } 
+        : { content: response, flags: 4 }
+    );
+}
+
+module.exports = { data, handler };
