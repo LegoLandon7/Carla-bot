@@ -26,7 +26,7 @@ const handler = async (interaction) => {
     const iconURL = role.iconURL({ size: 1024, dynamic: true }) || null;
     const creationDate = dateToDiscordTimestamp(role.createdAt);
     // embed
-    const embed = createEmbed(`📝 **${user.tag}'s** Information`,
+    const embed = createEmbed(`📝 **${role.name}'s** Information`,
         `**• Mention:** ${role}\n` +
         `**• Name:** *${role.name}*\n` +
         `**• ID:** *${role.id}*\n` +
