@@ -29,12 +29,12 @@ const handler = async (interaction) => {
     if (amount > 10) amount = 10;
 
     const query = interaction.options.getString('query');
-    let description = interaction.options.getBoolean('description');
+    let description = interaction.options.getBoolean('description') || true;
     if (amount != 1) description = false;
 
     const response = await googleSearch(query, amount, description);
 
-    const embed = interaction.options.getBoolean('embed');
+    const embed = interaction.options.getBoolean('embed') || true;
     await interaction.editReply( embed 
         ? { content: response } 
         : { content: response, flags: 4 }
