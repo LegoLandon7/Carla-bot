@@ -37,7 +37,7 @@ The keys/ folder should contain the following
 
 In the terminal make sure to run the following command:
 
-`npm install discord.js dotenv openai @google-cloud/text-to-speech`
+`npm install discord.js dotenv openai @google-cloud/text-to-speech @google-cloud/translate`
 
 This will install the required libraries for the bot to work.
 
