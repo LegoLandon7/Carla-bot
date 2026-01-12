@@ -1,5 +1,5 @@
 const { SlashCommandSubcommandBuilder, EmbedBuilder, MessageFlags, PermissionFlagsBits } = require('discord.js');
-const { getAIResponse, CONTEXTS } = require('../../../ai_model.js');
+const { getAIResponse, CONTEXTS } = require('../../../services/ai_model.js');
 
 const userHistory = {};
 

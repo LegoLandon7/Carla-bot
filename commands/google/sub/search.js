@@ -1,5 +1,5 @@
 const { SlashCommandSubcommandBuilder, EmbedBuilder, MessageFlags, PermissionFlagsBits } = require('discord.js');
-const { googleSearch } = require('../../../search_engine.js');
+const { googleSearch } = require('../../../services/search_engine.js');
 
 const data = new SlashCommandSubcommandBuilder()
     .setName('search')

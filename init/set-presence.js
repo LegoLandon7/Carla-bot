@@ -2,7 +2,7 @@ const { ActivityType, MessageFlags } = require('discord.js');
 
 function setPresence(client) {
         client.user.setPresence({
-        activities: [{ name: 'making love to carl', type: ActivityType.Playing }], 
+        activities: [{ name: 'eating a hamburger', type: ActivityType.Playing }], 
         status: 'online',
     });
 

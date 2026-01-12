@@ -41,32 +41,45 @@ async function handleTimers(client) {
 }
 
 async function handleTimersMessages(client) {
+    // messages
     client.on('messageCreate', (message) => {
-        if (message.author.bot) return;
+        timeData(message);
+    });
+    
+    // commands
+    client.on('interactionCreate', async (interaction) => {
+        if (!interaction.isChatInputCommand()) return;
+        timeData(null)
+    });
+}
 
-        for (const guildId in data) {
-            for (const id in data[guildId]) {
-                // get timer data
-                const entry = data[guildId][id];
-                if (!entry.enabled) continue;
+// timer function
+async function timeData(message) {
+    for (const guildId in data) {
+        for (const id in data[guildId]) {
+            // get timer data
+            const entry = data[guildId][id];
+            if (!entry.enabled) continue;
 
-                if (message.channel.id === entry.channelId && (message.content?.trim().toLowerCase() === entry.messageReset?.trim().toLowerCase() || entry.sentReset)) {
-                    // initialize time data
-                    if (!times[guildId]) times[guildId] = {};
-                    if (!times[guildId][id]) {
-                        times[guildId][id] = {
-                            time: entry.timeMs,
-                            date: Date.now()
-                        };
+            if (message?.channel.id === entry.channelId 
+                && (message?.content?.trim().toLowerCase() === entry.messageReset?.trim().toLowerCase() 
+                || entry.sentReset
+            )) {
+                // initialize time data
+                if (!times[guildId]) times[guildId] = {};
+                if (!times[guildId][id]) {
+                    times[guildId][id] = {
+                        time: entry.timeMs,
+                        date: Date.now()
+                    };
 
-                    // set time data
-                    } else times[guildId][id].date = Date.now();
+                // set time data
+                } else times[guildId][id].date = Date.now();
 
-                    console.log(`reset timer: ${id}`);
-                }
+                console.log(`reset timer: ${id}`);
             }
         }
-    });
+    }
 }
 
 module.exports = { handleTimers, handleTimersMessages };

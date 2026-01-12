@@ -1,8 +1,11 @@
 const { MessageFlags, PermissionFlagsBits } = require('discord.js');
-const { hasPermission } = require('../utils/permissions.js')
+const { hasPermission } = require('../utils/permissions.js');
+
+// Map structure:
+// serverCooldowns = Map<commandKey, Map<userId, timestamp>>
+// commandKey = commandName or commandName.subcommandName
 const serverCooldowns = new Map();
 
-// execute commands
 function handleSlashCommands(client) {
     client.on('interactionCreate', async (interaction) => {
         if (!interaction.isChatInputCommand()) return;
@@ -10,49 +13,77 @@ function handleSlashCommands(client) {
         const command = client.commands.get(interaction.commandName);
         if (!command) return;
 
-        // bypass cooldown
-        const canBypass = hasPermission(interaction.member, 
-            ["Administrator", "ManageGuild", "ModerateMembers"]);
+        // Check if user can bypass cooldown (Admins/Mods)
+        const canBypass = hasPermission(interaction.member, [
+            'Administrator',
+            'ManageGuild',
+            'ModerateMembers'
+        ]);
 
-        // cooldown
-        if (command.cooldown && !canBypass) {
-            const userId = interaction.user.id; // per user
-            const now = Date.now();
-            const ms = command.cooldown * 1000;
-
-            if (!serverCooldowns.has(command.name)) {
-                serverCooldowns.set(command.name, new Map());
-            }
-
-            const cmdCooldowns = serverCooldowns.get(command.name);
-
-            if (cmdCooldowns.has(userId)) {
-                const expires = cmdCooldowns.get(userId);
-                if (now < expires) {
-                    const remaining = ((expires - now) / 1000).toFixed(1);
-                    return interaction.reply({ content: `⏳ This command is on cooldown.\nTry again in **${remaining}s**.`, flags: MessageFlags.Ephemeral });
-                }
-            }
-
-            // new cooldown
-            cmdCooldowns.set(userId, now + ms);
-        }
-
-        // get subcommands
+        // --- Cooldown logic ---
         try {
             let subName = null;
-            try { subName = interaction.options.getSubcommand(); } catch (_){}
+            try { subName = interaction.options.getSubcommand(); } catch (_) {}
+            
+            // Use subcommand in key if exists
+            const commandKey = subName ? `${command.name}.${subName}` : command.name;
 
-            if (subName && command.subHandlers?.[subName]) { await command.subHandlers[subName](interaction); return; }
+            if (command.cooldown && !canBypass) {
+                const now = Date.now();
+                const ms = command.cooldown * 1000;
+                const userId = interaction.user.id;
 
-            // execute
-            if (command.execute) { await command.execute(interaction); return; }
+                if (!serverCooldowns.has(commandKey)) {
+                    serverCooldowns.set(commandKey, new Map());
+                }
+                const cmdCooldowns = serverCooldowns.get(commandKey);
 
-            await interaction.reply({ content: '❌ Subcommand not found.', flags: MessageFlags.Ephemeral });
+                if (cmdCooldowns.has(userId)) {
+                    const expires = cmdCooldowns.get(userId);
+                    if (now < expires) {
+                        const remaining = ((expires - now) / 1000).toFixed(1);
+                        return interaction.reply({
+                            content: `⏳ This command is on cooldown.\nTry again in **${remaining}s**.`,
+                            flags: MessageFlags.Ephemeral
+                        });
+                    }
+                }
 
+                // Set new cooldown for this user and command/subcommand
+                cmdCooldowns.set(userId, now + ms);
+            }
+
+            // --- Execute subcommand if it exists ---
+            if (subName && command.subHandlers?.[subName]) {
+                await command.subHandlers[subName](interaction);
+                return;
+            }
+
+            // --- Execute main command ---
+            if (command.execute) {
+                await command.execute(interaction);
+                return;
+            }
+
+            // Subcommand not found
+            await interaction.reply({
+                content: '❌ Subcommand not found.',
+                flags: MessageFlags.Ephemeral
+            });
         } catch (error) {
             console.error(`❌ Error executing /${interaction.commandName}:`, error);
-            await interaction.reply({ content: '❌ There was an error while executing this command!', flags: MessageFlags.Ephemeral }).catch(() => {});
+            try {
+                if (interaction.deferred || interaction.replied) {
+                    await interaction.editReply({
+                        content: '❌ There was an error while executing this command!'
+                    });
+                } else {
+                    await interaction.reply({
+                        content: '❌ There was an error while executing this command!',
+                        flags: MessageFlags.Ephemeral
+                    });
+                }
+            } catch (_) {}
         }
     });
 }
