@@ -6,8 +6,8 @@ const userHistory = {};
 const data = new SlashCommandSubcommandBuilder()
     .setName('prompt')
     .setDescription('Ask ChatGPT a prompt (stores history per user)')
-    .addStringOption(option => option
-        .setName('prompt')
+    .addStringOption(o => 
+        o.setName('prompt')
         .setDescription('The prompt to ask')
         .setRequired(true));
 

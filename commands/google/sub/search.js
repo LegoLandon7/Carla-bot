@@ -4,20 +4,20 @@ const { googleSearch } = require('../../../services/search_engine.js');
 const data = new SlashCommandSubcommandBuilder()
     .setName('search')
     .setDescription('Search google')
-    .addStringOption(option => option
-        .setName('query')
+    .addStringOption(o => 
+        o.setName('query')
         .setDescription('The query to search')
         .setRequired(true))
-    .addNumberOption(option => option
-        .setName('amount')
+    .addNumberOption(o => 
+        o.setName('amount')
         .setDescription('The amount to search')
         .setRequired(false))
-    .addBooleanOption(option => option
-        .setName('description')
+    .addBooleanOption(o => 
+        o.setName('description')
         .setDescription('Show website description (set to false on amounts > 1)')
         .setRequired(false))
-    .addBooleanOption(option => option
-        .setName('embed')
+    .addBooleanOption(o => 
+        o.setName('embed')
         .setDescription('Show rich embeds')
         .setRequired(false));
 
