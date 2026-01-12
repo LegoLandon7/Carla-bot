@@ -32,7 +32,7 @@ const handler = async (interaction) => {
 
     for (const id in guildTimers) {
         const entry = guildTimers[id];
-        output.push(`**• ${id}** | *${msToDuration(entry.timeMs)}* | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'} | ${mentionChannel(interaction.guild.channels.cache.get(entry.channelId))} | ${entry.message}`);
+        output.push(`${'`' + id + '`'} | *${msToDuration(entry.timeMs)}* | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'}\n- **Channel: **${mentionChannel(interaction.guild.channels.cache.get(entry.channelId))}\n- **Reset: **${entry.messageReset ? ` [YES] : ${entry.messageReset}` : (entry.sentReset ? '[YES]' : '[NO]')}\n- **Message: **${entry.message}`);
     }
 
     const embed = createEmbed(`⏲️ **${interaction.guild.name}'s** Timers`, output.join('\n'),

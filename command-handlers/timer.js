@@ -50,7 +50,7 @@ async function handleTimersMessages(client) {
                 const entry = data[guildId][id];
                 if (!entry.enabled) continue;
 
-                if (message.channel.id === entry.channelId && (message.content.trim().toLowerCase() === entry.messageReset.trim().toLowerCase() || entry.sentReset)) {
+                if (message.channel.id === entry.channelId && (message.content?.trim().toLowerCase() === entry.messageReset?.trim().toLowerCase() || entry.sentReset)) {
                     // initialize time data
                     if (!times[guildId]) times[guildId] = {};
                     if (!times[guildId][id]) {
