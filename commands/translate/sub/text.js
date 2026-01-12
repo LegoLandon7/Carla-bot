@@ -12,13 +12,13 @@ const data = new SlashCommandSubcommandBuilder()
     .addStringOption(o => 
         o.setName('from-language')
         .setDescription('The language to translate from')
-        .addChoices( { name: 'Auto Detect', value: 'auto' }, ...languages
-        ).setRequired(false))
+        .addChoices( { name: 'Auto Detect', value: 'auto' }, ...languages)
+        .setRequired(false))
     .addStringOption(o => 
         o.setName('to-language')
         .setDescription('The language to translate to')
-        .addChoices( { name: 'Auto Detect', value: 'auto' }, ...languages
-        ).setRequired(false))
+        .addChoices( { name: 'Auto Detect', value: 'auto' }, ...languages)
+        .setRequired(false))
     .addBooleanOption(o => 
         o.setName('speak')
         .setDescription('Speak the translation?')
