@@ -6,9 +6,8 @@ const { dateToDiscordTimestamp } = require('../../../utils/time.js');
 const data = new SlashCommandSubcommandBuilder()
     .setName('user')
     .setDescription('Shows the info of a user')
-    .addUserOption(option => 
-        option
-            .setName('target_user')
+    .addUserOption(o => 
+        o.setName('target_user')
             .setDescription('The user to get the info from, leave blank to default to you')
             .setRequired(false));
 

@@ -31,7 +31,7 @@ const handler = async (interaction) => {
     if (target_user.bot)
         return interaction.editReply({ content: "❌ You can't DM bots." });
 
-    // echo
+    // dm
     try {
         await target_user.send({ content: message});
         return interaction.editReply({ content: `✅ Successfully sent dm: **${message}**.`});

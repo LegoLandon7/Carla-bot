@@ -7,31 +7,38 @@ const path = require('path');
 const data = new SlashCommandSubcommandBuilder()
     .setName('create')
     .setDescription('Creates a timer')
-    .addStringOption(option => 
-        option
-            .setName('time')
+    .addStringOption(o => 
+        o.setName('time')
             .setDescription('The amount of time in-between sending each message')
             .setRequired(true))
-    .addStringOption(option => 
-        option
-            .setName('message')
+    .addStringOption(o => 
+        o.setName('message')
             .setDescription('The message to say')
             .setRequired(true))
-    .addChannelOption(option => 
-        option
-            .setName('target_channel')
+    .addChannelOption(o => 
+        o.setName('target_channel')
             .setDescription('The channel to send the message in')
             .setRequired(true))
-    .addStringOption(option => 
-        option
-            .setName('id')
+    .addStringOption(o => 
+        o.setName('id')
             .setDescription('The id to refer to the timer as')
-            .setRequired(true));
+            .setRequired(true))
+    .addBooleanOption(o => 
+        o.setName('sent-reset')
+            .setDescription('Reset the timer when a message is sent?')
+            .setRequired(false))
+    .addStringOption(o => 
+        o.setName('message-reset')
+            .setDescription('Reset the timer when this message is sent (case insensitive)')
+            .setRequired(false));
 
 const handler = async (interaction) => {
     await interaction.deferReply();
 
     // data
+    const sentReset = interaction.options.getBoolean('sent-reset') || false;
+    const messageReset = interaction.options.getString('message-reset') || null;
+
     const time = interaction.options.getString('time');
     const msTime = durationToMs(time);
 
@@ -67,7 +74,9 @@ const handler = async (interaction) => {
         timeMs: msTime,
         message: message,
         channelId: channelId,
-        enabled: true
+        enabled: true,
+        sentReset: sentReset,
+        messageReset: messageReset
     };
 
     writeJson(path.resolve(path.resolve(__dirname, '../../../data/timers.json')), timerData);

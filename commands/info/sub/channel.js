@@ -6,9 +6,8 @@ const { fetchMembers } = require('../../../utils/fetch.js');
 const data = new SlashCommandSubcommandBuilder()
     .setName('channel')
     .setDescription('Shows the info of a role')
-    .addChannelOption(option =>
-        option
-            .setName('target_channel')
+    .addChannelOption(o =>
+        o.setName('target_channel')
             .setDescription('The channel to get info for')
             .setRequired(true)
     );

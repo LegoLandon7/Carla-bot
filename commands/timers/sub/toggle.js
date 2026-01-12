@@ -7,9 +7,8 @@ const path = require('path');
 const data = new SlashCommandSubcommandBuilder()
     .setName('toggle')
     .setDescription('Enables / disables a timer')
-    .addStringOption(option => 
-        option
-            .setName('id')
+    .addStringOption(o => 
+        o.setName('id')
             .setDescription('The id of the timer to toggle')
             .setRequired(true));
 

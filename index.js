@@ -29,7 +29,7 @@ const { retrieveCommands } = require('./init/retrieve-commands');
 const { handleSlashCommands } = require('./init/execute-commands');
 const { setPresence } = require('./init/set-presence');
 
-const { handleTimers } = require('./command-handlers/timer.js');
+const { handleTimers, handleTimersMessages } = require('./command-handlers/timer.js');
 
 client.once('clientReady', () => {
     // initialization
@@ -38,8 +38,9 @@ client.once('clientReady', () => {
     setPresence(client);
 
     // command handlers
-    handleTimers(client)
+    handleTimers(client);
     setInterval(() => handleTimers(client), 5000); // 5 seconds
+    handleTimersMessages(client);
 
     // message
     console.log(`✅ Logged in as ${client.user.tag}`);

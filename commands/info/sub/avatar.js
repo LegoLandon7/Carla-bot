@@ -4,9 +4,8 @@ const { COLORS, createEmbed} = require('../../../utils/embed.js');
 const data = new SlashCommandSubcommandBuilder()
     .setName('avatar')
     .setDescription('Shows the avatar of a user')
-    .addUserOption(option => 
-        option
-            .setName('target_user')
+    .addUserOption(o => 
+        o.setName('target_user')
             .setDescription('The user to get the avatar from, leave blank to default to you')
             .setRequired(false));
 

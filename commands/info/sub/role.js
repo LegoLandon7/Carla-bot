@@ -6,9 +6,8 @@ const { fetchMembers } = require('../../../utils/fetch.js');
 const data = new SlashCommandSubcommandBuilder()
     .setName('role')
     .setDescription('Shows the info of a role')
-    .addRoleOption(option =>
-        option
-            .setName('target_role')
+    .addRoleOption(o =>
+        o.setName('target_role')
             .setDescription('The role to get info for')
             .setRequired(true)
     );

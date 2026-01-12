@@ -5,9 +5,8 @@ const { dateToDiscordTimestamp } = require('../../../utils/time.js');
 const data = new SlashCommandSubcommandBuilder()
     .setName('server')
     .setDescription('Shows the info of the server')
-    .addStringOption(option =>
-        option
-            .setName('server_id')
+    .addStringOption(o =>
+        o.setName('server_id')
             .setDescription('Optional server ID to fetch info for')
             .setRequired(false)
     );

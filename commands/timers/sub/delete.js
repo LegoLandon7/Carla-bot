@@ -7,9 +7,8 @@ const path = require('path');
 const data = new SlashCommandSubcommandBuilder()
     .setName('delete')
     .setDescription('Deletes a timer')
-    .addStringOption(option => 
-        option
-            .setName('id')
+    .addStringOption(o => 
+        o.setName('id')
             .setDescription('The id of the timer to delete')
             .setRequired(true));
 

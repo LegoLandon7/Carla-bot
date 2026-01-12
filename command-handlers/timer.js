@@ -4,12 +4,14 @@ const path = require('path');
 ensureJson(path.resolve(__dirname, '../data/timers.json'));
 
 let times = {};
+let data = {};
 
 async function handleTimers(client) {
-    const data = readJson(path.resolve(__dirname, '../data/timers.json'));
+    data = readJson(path.resolve(__dirname, '../data/timers.json'));
 
     for (const guildId in data) {
         for (const id in data[guildId]) {
+
             // get timer data
             const entry = data[guildId][id];
             if (!entry.enabled) continue;
@@ -38,4 +40,33 @@ async function handleTimers(client) {
     }
 }
 
-module.exports = { handleTimers };
+async function handleTimersMessages(client) {
+    client.on('messageCreate', (message) => {
+        if (message.author.bot) return;
+
+        for (const guildId in data) {
+            for (const id in data[guildId]) {
+                // get timer data
+                const entry = data[guildId][id];
+                if (!entry.enabled) continue;
+
+                if (message.channel.id === entry.channelId && (message.content.trim().toLowerCase() === entry.messageReset.trim().toLowerCase() || entry.sentReset)) {
+                    // initialize time data
+                    if (!times[guildId]) times[guildId] = {};
+                    if (!times[guildId][id]) {
+                        times[guildId][id] = {
+                            time: entry.timeMs,
+                            date: Date.now()
+                        };
+
+                    // set time data
+                    } else times[guildId][id].date = Date.now();
+
+                    console.log(`reset timer: ${id}`);
+                }
+            }
+        }
+    });
+}
+
+module.exports = { handleTimers, handleTimersMessages };
