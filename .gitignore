@@ -3,3 +3,6 @@ node_modules
 
 /data/*
 !/data/.gitkeep
+
+/keys/*
+!/keys/.gitkeep

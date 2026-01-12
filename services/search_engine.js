@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const API_KEY = process.env.SEARCH_ENGINE_KEY;
+const API_KEY = process.env.GOOGLE_PROJECT_KEY;
 const CSE_ID = process.env.SEARCH_ENGINE_ID;
 
 async function googleSearch(query, num = 1, description = true) {

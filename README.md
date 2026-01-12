@@ -22,16 +22,22 @@ DEV_IDS=[] (array)
 OPENAI_KEY=[]
 SEARCH_ENGINE_KEY=[]
 SEARCH_ENGINE_ID=[]
+
+GOOGLE_APPLICATION_CREDENTIALS=[path-to-google-keys.json]
 ```
 
 Then make sure the arguments replacing the [] brackets are the actual data needed.
 Some commands may not work if you dont have the google engine keys or openai keys.
 
+The keys/ folder should contain the following
+
+- tts-model.json (json file for the google key)
+
 ### NEXT: 
 
 In the terminal make sure to run the following command:
 
-`npm install discord.js dotenv openai`
+`npm install discord.js dotenv openai @google-cloud/text-to-speech`
 
 This will install the required libraries for the bot to work.
 
