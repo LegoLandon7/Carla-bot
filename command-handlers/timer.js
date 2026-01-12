@@ -76,7 +76,7 @@ async function timeData(message) {
                 // set time data
                 } else times[guildId][id].date = Date.now();
 
-                console.log(`reset timer: ${id}`);
+                //console.log(`reset timer: ${id}`);
             }
         }
     }

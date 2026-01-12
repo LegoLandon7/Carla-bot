@@ -17,7 +17,7 @@ const data = new SlashCommandSubcommandBuilder()
     .addStringOption(o => 
         o.setName('to-language')
         .setDescription('The language to translate to')
-        .addChoices( { name: 'Auto Detect', value: 'auto' }, ...languages)
+        .addChoices(...languages)
         .setRequired(false))
     .addBooleanOption(o => 
         o.setName('speak')

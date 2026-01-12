@@ -26,8 +26,7 @@ const langMap = {
     pl: 'pl-PL',
     uk: 'uk-UA',
     ro: 'ro-RO',
-    cs: 'cs-CZ',
-    el: 'el-GR'
+    cs: 'cs-CZ'
 };
 
 // language names
@@ -55,8 +54,7 @@ const languages = [
     { name: 'Polish', value: 'pl' },
     { name: 'Ukrainian', value: 'uk' },
     { name: 'Romanian', value: 'ro' },
-    { name: 'Czech', value: 'cs' },
-    { name: 'Greek', value: 'el' }
+    { name: 'Czech', value: 'cs' }
 ];
 
 // detect language
