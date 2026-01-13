@@ -5,7 +5,7 @@ const { durationToMs, msToDuration } = require('../../../utils/time.js');
 const path = require('path');
 
 const data = new SlashCommandSubcommandBuilder()
-    .setName('delete')
+    .setName('clear')
     .setDescription('Deletes all timers');
 
 const handler = async (interaction) => {

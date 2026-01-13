@@ -30,7 +30,7 @@ async function handleTriggers(client) {
                 send = true
             } else if (entry.matchType === 'wholeWord') {
                 const escaped = trigger.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-                const regex = new RegExp(`\\b${escaped}\\b`, strictCase);
+                const regex = new RegExp(`\\b${escaped}\\b`, "i");
 
                 if (regex.test(message.content)) send = true;
             } else if (entry.matchType === 'regex') {

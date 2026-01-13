@@ -5,7 +5,7 @@ const { durationToMs, msToDuration } = require('../../../utils/time.js');
 const path = require('path');
 
 const data = new SlashCommandSubcommandBuilder()
-    .setName('delete-all')
+    .setName('clear')
     .setDescription('Deletes all triggers');
 
 const handler = async (interaction) => {
