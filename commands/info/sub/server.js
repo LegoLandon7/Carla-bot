@@ -34,7 +34,7 @@ const handler = async (interaction) => {
     // embed
     const embed = createEmbed(`📝 **${guild.name}'s** Information`,
         `**• Name:** *${guild.name}*\n` +
-        `**• ID:** *${guild.id}*\n` +
+        `**• ID:** ${'`' + guild.id + '`'}\n` +
         `**• Owner:** *${owner.user.tag}*\n` +
         `**• Members:** *${totalMembers}*\n` +
         `**• Channels:** *${totalChannels}*\n` +

@@ -5,7 +5,8 @@ const path = require('path');
 const data = new SlashCommandBuilder()
     .setName('mod')
     .setDescription('Moderation commands')
-    .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers);
+    .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
+    .setContexts(0);
 
 const subHandlers = {};
 const subPath = path.join(__dirname, 'sub');

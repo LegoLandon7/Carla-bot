@@ -25,7 +25,7 @@ const handler = async (interaction) => {
     const embed = createEmbed(`📝 **${user.tag}'s** Information`,
         `**• Mention:** ${mentionUser(user)}\n` +
         `**• Username:** *${user.tag}*\n` +
-        `**• ID:** *${user.id}*\n` +
+        `**• ID:** ${'`' + user.id + '`'}\n` +
         `**• Owner:** *cc_landonlego*\n` +
         `**• Guilds:** *${size}*\n` +
         `**• Uptime:** *${uptime}m*\n` +

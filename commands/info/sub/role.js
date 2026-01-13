@@ -28,7 +28,7 @@ const handler = async (interaction) => {
     const embed = createEmbed(`📝 **${role.name}'s** Information`,
         `**• Mention:** ${role}\n` +
         `**• Name:** *${role.name}*\n` +
-        `**• ID:** *${role.id}*\n` +
+        `**• ID:** ${'`' + role.id + '`'}\n` +
         `**• Color:** *${role.hexColor}*\n` +
         `**• Hoisted:** *${role.hoist ? '[YES]' : '[NO]'}*\n` +
         `**• Mentionable:** *${role.mentionable ? '[YES' : '[NO]'}*\n` +

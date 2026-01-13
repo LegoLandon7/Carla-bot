@@ -5,7 +5,8 @@ const path = require('path');
 const data = new SlashCommandBuilder()
     .setName('timers')
     .setDescription('Timer commands')
-    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild);
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
+    .setContexts(0);
 
 const subHandlers = {};
 const subPath = path.join(__dirname, 'sub');

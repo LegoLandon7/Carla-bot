@@ -29,7 +29,7 @@ const handler = async (interaction) => {
         `**• Mention:** ${user}\n` +
         `**• Username:** *${user.tag}*\n` +
         `**• Nickname:** ${member.nickname ? `*${member.nickname}*` : '[NONE]'}\n` +
-        `**• ID:** *${user.id}*\n` +
+        `**• ID:** ${'`' + user.id + '`'}\n` +
         `**• Is Bot:** ${user.bot ? '[YES]' : '[NO]'}\n` +
         `**• Is Boosting:** ${member.premiumSince ? '[YES]' : '[NO]'}\n` +
         `**• Server Join Date:** ${dateJoined}\n` +
