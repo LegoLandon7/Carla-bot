@@ -30,6 +30,7 @@ const { handleSlashCommands } = require('./init/execute-commands');
 const { setPresence } = require('./init/set-presence');
 
 const { handleTimers, handleTimersMessages } = require('./command-handlers/timer.js');
+const { handleTriggers } = require('./command-handlers/trigger.js');
 
 client.once('clientReady', () => {
     // initialization
@@ -42,12 +43,11 @@ client.once('clientReady', () => {
     setInterval(() => handleTimers(client), 5000); // 5 seconds
     handleTimersMessages(client);
 
+    handleTriggers(client);
+
     // message
     console.log(`✅ Logged in as ${client.user.tag}`);
 });
-
-const {ensureJson} = require('./utils/files.js');
-ensureJson('../data/timers.json');
 
 // login
 client.login(process.env.BOT_TOKEN);
