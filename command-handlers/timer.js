@@ -34,7 +34,7 @@ async function handleTimers(client) {
                 const channel = await client.channels.fetch(entry.channelId);
                 if (!channel?.isTextBased()) continue;
 
-                try { await channel.send(entry.message); } catch(error) {}
+                try { await channel.send(entry.response); } catch(error) {}
             }
         }
     }

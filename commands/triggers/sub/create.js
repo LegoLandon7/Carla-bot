@@ -8,12 +8,12 @@ const data = new SlashCommandSubcommandBuilder()
     .setName('create')
     .setDescription('Creates a trigger')
     .addStringOption(o => 
-        o.setName('message')
-            .setDescription('The message to reply to the trigger with')
-            .setRequired(true))
-    .addStringOption(o => 
         o.setName('trigger')
             .setDescription('The text to reply to (case insensitive)')
+            .setRequired(true))
+    .addStringOption(o => 
+        o.setName('response')
+            .setDescription('The message to reply to the trigger with')
             .setRequired(true))
     .addStringOption(o => 
         o.setName('id')
@@ -21,22 +21,25 @@ const data = new SlashCommandSubcommandBuilder()
             .setRequired(true))
     .addStringOption(o => 
         o.setName('match_type')
-            .setDescription('Match the trigger')
+            .setDescription('Match the trigger to a certain type')
             .addChoices( 
+                { name: 'Normal', value: 'normal' },
                 { name: 'Strict', value: 'strict' },
-                { name: 'Whole Word', value: 'wholeWord' },
-                { name: 'Regex', value: 'regex' }
+                { name: 'Exact', value: 'exact' },
+                { name: 'Regex', value: 'regex' },
+                { name: 'Ends end', value: 'ends' },
+                { name: 'Starts with', value: 'starts' }
             ).setRequired(false))
 
 const handler = async (interaction) => {
     await interaction.deferReply();
 
     // data
-    const message = interaction.options.getString('message');
+    const response = interaction.options.getString('response');
     const trigger = interaction.options.getString('trigger');
     const id = interaction.options.getString('id');
 
-    const matchType = interaction.options.getString('match_type') || 'none';
+    const matchType = interaction.options.getString('match_type') || 'normal';
 
     // permissions
     if (!interaction.inGuild())
@@ -65,8 +68,8 @@ const handler = async (interaction) => {
     if (matchType === 'regex') newTrigger = trigger.replace(/\\/g, "\\\\");
 
     triggerData[guildId][id] = {
-        message: message,
         trigger: newTrigger,
+        response: response,
         enabled: true,
         matchType: matchType
     };

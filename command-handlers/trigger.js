@@ -11,9 +11,14 @@ async function handleTriggers(client) {
         // read data
         data = readJson(path.resolve(__dirname, '../data/triggers.json'));
 
+        // checks
         if (!message.guild || message.author.bot) return;
         const guildId = message.guild.id;
         if (!data[guildId]) return;
+
+        // cooldown
+        if (!cooldowns[guildId]) cooldowns[guildId] = 0;
+        if (Date.now() - cooldowns[guildId] < 5000) return; // 5 seconds
 
         for (const id in data[guildId]) {
             // get trigger data
@@ -22,34 +27,38 @@ async function handleTriggers(client) {
             if (!data[guildId]) continue;
 
             const trigger = entry.trigger;
+            const input = message.content;
             
             // check if trigger should send
             let send = false;
-            const strictCase = entry.matchType === 'strict' ? '' : 'i';
-            if (entry.matchType === 'strict' && trigger === message.content) {
-                send = true
-            } else if (entry.matchType === 'wholeWord') {
-                const escaped = trigger.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-                const regex = new RegExp(`\\b${escaped}\\b`, "i");
 
-                if (regex.test(message.content)) send = true;
-            } else if (entry.matchType === 'regex') {
-                try {
-                    const regex = new RegExp(trigger, strictCase);
-                    if (regex.test(message.content)) send = true;
-                } catch(err) {console.error(err)}
-            } else if (message.content.toLowerCase().includes(trigger.toLowerCase()) && entry.matchType === 'none') send = true;
+            switch (entry.matchType) {
+                case 'strict': // strict
+                    send = trigger === input.trim();
+                    break;
+                case 'exact': // exact
+                    send = trigger === input;
+                    break;
+                case 'regex': // regex
+                    try { send = new RegExp(trigger, "i").test(input);
+                    } catch(err) {console.error(err)}
+                    break;
+                case 'ends': // ends with
+                    send = input.toLowerCase().endsWith(trigger.toLowerCase());
+                    break;
+                case 'starts': // starts with
+                    send = input.toLowerCase().startsWith(trigger.toLowerCase());
+                    break;
+                case 'normal': default: // normal
+                    send = input.toLowerCase().includes(trigger.toLowerCase());
+                    break;
+            }
 
-            //console.log(trigger + " " + message.content + " " + send + " " + entry.matchType);
-
-            // cooldown initialize
-            if (!cooldowns[guildId]) cooldowns[guildId] = 0;
-
-            // send
-            if (send && Date.now() - cooldowns[guildId] >= 5000) try { // 5 seconds
-                await message.channel.send(entry.message); 
+            if (send) try {
+                await message.channel.send(entry.response);
                 cooldowns[guildId] = Date.now();
-            } catch(error) {}
+                break;
+            } catch(err) {console.error(err)}
         }
     });
 }

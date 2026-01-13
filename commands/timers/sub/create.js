@@ -12,7 +12,7 @@ const data = new SlashCommandSubcommandBuilder()
             .setDescription('The amount of time in-between sending each message')
             .setRequired(true))
     .addStringOption(o => 
-        o.setName('message')
+        o.setName('response')
             .setDescription('The message to say')
             .setRequired(true))
     .addChannelOption(o => 
@@ -44,7 +44,7 @@ const handler = async (interaction) => {
 
     const channel = interaction.options.getChannel('target_channel');
 
-    const message = interaction.options.getString('message');
+    const reponse = interaction.options.getString('response');
     const id = interaction.options.getString('id');
 
     // permissions
@@ -72,7 +72,7 @@ const handler = async (interaction) => {
 
     timerData[guildId][id] = {
         timeMs: msTime,
-        message: message,
+        response: reponse,
         channelId: channelId,
         enabled: true,
         sentReset: sentReset,
