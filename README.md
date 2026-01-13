@@ -1,4 +1,4 @@
-# Cosmos
+# Carla-bot
 
 ## Important Notes
 
