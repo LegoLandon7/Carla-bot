@@ -40,14 +40,25 @@ async function handleTriggers(client) {
                     send = trigger === input;
                     break;
                 case 'regex': // regex
-                    try { send = new RegExp(trigger, "i").test(input);
-                    } catch(err) {console.error(err)}
+                    try { 
+                        send = new RegExp(trigger, "i").test(input);
+                    } catch(err) {
+                        console.error(err)
+                    }
                     break;
                 case 'ends': // ends with
                     send = input.toLowerCase().endsWith(trigger.toLowerCase());
                     break;
                 case 'starts': // starts with
                     send = input.toLowerCase().startsWith(trigger.toLowerCase());
+                    break;
+                case 'word': // word
+                    try {
+                        const escaped = trigger.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                        send = new RegExp(`(^|\\W)${escaped}(\\W|$)`, 'i').test(input);
+                    } catch(err) {
+                        console.error(err)
+                    }
                     break;
                 case 'normal': default: // normal
                     send = input.toLowerCase().includes(trigger.toLowerCase());

@@ -28,7 +28,8 @@ const data = new SlashCommandSubcommandBuilder()
                 { name: 'Exact', value: 'exact' },
                 { name: 'Regex', value: 'regex' },
                 { name: 'Ends end', value: 'ends' },
-                { name: 'Starts with', value: 'starts' }
+                { name: 'Starts with', value: 'starts' },
+                { name: 'Word', value: 'word' }
             ).setRequired(false))
 
 const handler = async (interaction) => {
