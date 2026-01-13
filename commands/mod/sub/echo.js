@@ -37,10 +37,17 @@ const handler = async (interaction) => {
     // echo
     try {
         if (messageId) {
-            const messageFetched = await target_channel.messages.fetch(messageId);
+            // fetch message
+            let messageFetched = '';
+            try {
+                messageFetched = await target_channel.messages.fetch(messageId);
+            } catch (err) {
+                return interaction.editReply({ content: "❌ Message ID not found. Check if the target_channel is correct."});
+            }
             if (!messageFetched)
                 return interaction.editReply({ content: "❌ Message ID not found. Check if the target_channel is correct."});
 
+            // send
             await messageFetched.reply({ content: message })
         } else {
             await target_channel.send({ content: message });
