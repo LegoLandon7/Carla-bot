@@ -10,12 +10,12 @@ const data = new SlashCommandSubcommandBuilder()
         .setDescription('The text to translate')
         .setRequired(true))
     .addStringOption(o => 
-        o.setName('from-language')
+        o.setName('from_language')
         .setDescription('The language to translate from')
         .addChoices( { name: 'Auto Detect', value: 'auto' }, ...languages)
         .setRequired(false))
     .addStringOption(o => 
-        o.setName('to-language')
+        o.setName('to_language')
         .setDescription('The language to translate to')
         .addChoices(...languages)
         .setRequired(false))
@@ -32,8 +32,8 @@ const handler = async (interaction) => {
     if (text.length > 250)
         return interaction.editReply({ content: "❌ Max message length of 250."});
 
-    let from = interaction.options.getString('from-language') || 'auto';
-    const to = interaction.options.getString('to-language') || 'en';
+    let from = interaction.options.getString('from_language') || 'auto';
+    const to = interaction.options.getString('to_language') || 'en';
 
     const speak = interaction.options.getBoolean('speak');
 

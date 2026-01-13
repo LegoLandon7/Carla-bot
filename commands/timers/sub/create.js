@@ -24,11 +24,11 @@ const data = new SlashCommandSubcommandBuilder()
             .setDescription('The id to refer to the timer as')
             .setRequired(true))
     .addBooleanOption(o => 
-        o.setName('sent-reset')
+        o.setName('sent_reset')
             .setDescription('Reset the timer when a message is sent?')
             .setRequired(false))
     .addStringOption(o => 
-        o.setName('message-reset')
+        o.setName('message_reset')
             .setDescription('Reset the timer when this message is sent (case insensitive)')
             .setRequired(false));
 
@@ -36,8 +36,8 @@ const handler = async (interaction) => {
     await interaction.deferReply();
 
     // data
-    const sentReset = interaction.options.getBoolean('sent-reset') || false;
-    const messageReset = interaction.options.getString('message-reset') || null;
+    const sentReset = interaction.options.getBoolean('sent_reset') || false;
+    const messageReset = interaction.options.getString('message_reset') || null;
 
     const time = interaction.options.getString('time');
     const msTime = durationToMs(time);
