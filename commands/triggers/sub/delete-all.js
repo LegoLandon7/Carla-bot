@@ -19,8 +19,6 @@ const handler = async (interaction) => {
 
     // data
     const triggerData = readJson(path.resolve(__dirname, '../../../data/triggers.json'));
-
-    // entry
     const guildId = interaction.guild.id;
 
     // delete

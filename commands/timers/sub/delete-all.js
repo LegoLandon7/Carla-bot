@@ -19,8 +19,6 @@ const handler = async (interaction) => {
 
     // data
     const timerData = readJson(path.resolve(__dirname, '../../../data/timers.json'));
-
-    // entry
     const guildId = interaction.guild.id;
 
     // delete
