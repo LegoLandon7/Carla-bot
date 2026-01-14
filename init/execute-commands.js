@@ -1,10 +1,13 @@
 const { MessageFlags, PermissionFlagsBits } = require('discord.js');
 const { hasPermission } = require('../utils/permissions.js');
+require('dotenv').config();
 
 // Map structure:
 // serverCooldowns = Map<commandKey, Map<userId, timestamp>>
 // commandKey = commandName or commandName.subcommandName
 const serverCooldowns = new Map();
+
+const devs = process.env.DEV_IDS;
 
 function handleSlashCommands(client) {
     client.on('interactionCreate', async (interaction) => {
@@ -14,11 +17,16 @@ function handleSlashCommands(client) {
         if (!command) return;
 
         // Check if user can bypass cooldown (Admins/Mods)
-        const canBypass = hasPermission(interaction.member, [
+        let canBypass = false;
+
+        /*const canBypass = hasPermission(interaction.member, [
             'Administrator',
             'ManageGuild',
             'ModerateMembers'
-        ]);
+        ]);*/
+
+        // Bypass cooldowns for devs
+        canBypass = devs.contains(interaction.user.id);
 
         // --- Cooldown logic ---
         try {
