@@ -47,7 +47,8 @@ const handler = async (interaction) => {
                 `${'`' + id + '`'} | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'}\n` +
                 `- **Trigger:** ${entry.trigger}\n` +
                 `- **Response:** ${entry.response}\n` +
-                `- **Match Type:** [${entry.matchType.toUpperCase()}]`
+                `- **Match Type:** [${entry.matchType.toUpperCase()}]` +
+                `- **Response Type:** [${entry.responseType.toUpperCase()}]`
             );
         }
     }

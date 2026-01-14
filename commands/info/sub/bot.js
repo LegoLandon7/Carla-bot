@@ -13,7 +13,7 @@ const handler = async (interaction) => {
     // data
     const user = interaction.client.user;
     const size = interaction.client.guilds.cache.size
-    const uptime = Math.floor(process.uptime() / 60);
+    const uptime = Math.floor(process.uptime() / 60 / 60);
     const memory = (Math.round(process.memoryUsage().rss / 1024 / 1024)) + "MB";
 
     const avatarURL = user.displayAvatarURL({ size: 1024, dynamic: true });
@@ -28,7 +28,7 @@ const handler = async (interaction) => {
         `**• ID:** ${'`' + user.id + '`'}\n` +
         `**• Owner:** *cc_landonlego*\n` +
         `**• Guilds:** *${size}*\n` +
-        `**• Uptime:** *${uptime}m*\n` +
+        `**• Uptime:** *${uptime}h*\n` +
         `**• Memory Usage:** *${memory}*\n` +
         `**• Bot Creation:** ${dateMade}\n` +
         `**• Links:** [Avatar](${avatarURL}) • [Github](${gitURL}) • [Invite](${inviteURL})`,
