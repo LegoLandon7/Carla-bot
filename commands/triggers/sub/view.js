@@ -38,7 +38,7 @@ const handler = async (interaction) => {
     const output = `${'`' + id + '`'} | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'}\n` +
         `- **Trigger:** ${entry.trigger}\n` +
         `- **Response:** ${entry.response}\n` +
-        `- **Match Type:** [${entry.matchType.toUpperCase()}]` +
+        `- **Match Type:** [${entry.matchType.toUpperCase()}]\n` +
         `- **Response Type:** [${entry.responseType.toUpperCase()}]`;
 
     if (Object.keys(guildTriggers).length > 10) simplified = true;
