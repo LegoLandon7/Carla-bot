@@ -7,12 +7,12 @@ const { mentionChannel } = require('../../../utils/channel.js');
 const path = require('path');
 
 const data = new SlashCommandSubcommandBuilder()
-    .setName('view')
-    .setDescription('Views a created trigger')
-    .addStringOption(o => 
-        o.setName('id')
-            .setDescription('The id of the trigger to view')
-            .setRequired(true));
+    .setName('list')
+    .setDescription('Views all created triggers')
+    .addBooleanOption(o => 
+        o.setName('simplified')
+            .setDescription('Simplify the view (automatically applied with over 10 entries)')
+            .setRequired(false));
 
 const handler = async (interaction) => {
     await interaction.deferReply();
@@ -26,23 +26,33 @@ const handler = async (interaction) => {
     // data
     const triggerData = readJson(path.resolve(__dirname, '../../../data/triggers.json'));
 
-    let id = interaction.options.getString('id');
+    let simplified = interaction.options.getBoolean('simplified') || false;
 
     const guildId = interaction.guild.id;
     const guildTriggers = triggerData[guildId];
 
-    const entry = guildTriggers[id];
-    if (!entry)
-        return interaction.editReply({ content: `❌ no trigger found with id ${'`' + id + '`'}` });
-
-    const output = `${'`' + id + '`'} | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'}\n` +
-        `- **Message:** ${entry.response}\n` +
-        `- **Trigger:** ${entry.trigger}\n` +
-        `- **Match Type:** [${entry.matchType.toUpperCase()}]`;
+    if (!guildTriggers || Object.keys(guildTriggers).length === 0)
+        return interaction.editReply({ content: "❌ no triggers for this server" });
 
     if (Object.keys(guildTriggers).length > 10) simplified = true;
 
-    let embed = createEmbed(`⚡ Trigger: **${id}**`, output,
+    const output = [];
+
+    for (const id in guildTriggers) {
+        const entry = guildTriggers[id];
+        if (simplified) {
+            output.push(`${'`' + id + '`'} | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'}`);
+        } else {
+            output.push(
+                `${'`' + id + '`'} | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'}\n` +
+                `- **Message:** ${entry.message}\n` +
+                `- **Trigger:** ${entry.trigger}\n` +
+                `- **Match Type:** [${entry.matchType.toUpperCase()}]`
+            );
+        }
+    }
+
+    let embed = createEmbed(`⏲️ **${interaction.guild.name}'s** Triggers`, output.join('\n'),
         COLORS.INFO, interaction.user, false, false, null );
 
     try { await interaction.editReply({ embeds: [embed] }); }

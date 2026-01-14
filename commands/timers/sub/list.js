@@ -7,12 +7,12 @@ const { mentionChannel } = require('../../../utils/channel.js');
 const path = require('path');
 
 const data = new SlashCommandSubcommandBuilder()
-    .setName('view')
-    .setDescription('Views a created timer')
-    .addStringOption(o => 
-        o.setName('id')
-            .setDescription('The id of the timer to view')
-            .setRequired(true));
+    .setName('list')
+    .setDescription('Views all created timers')
+    .addBooleanOption(o => 
+        o.setName('simplified')
+            .setDescription('Simplify the view (automatically applied with over 10 entries)')
+            .setRequired(false));
 
 const handler = async (interaction) => {
     await interaction.deferReply();
@@ -26,21 +26,33 @@ const handler = async (interaction) => {
     // data
     const timerData = readJson(path.resolve(__dirname, '../../../data/timers.json'));
 
-    let id = interaction.options.getString('id');
+    let simplified = interaction.options.getBoolean('simplified') || false;
 
     const guildId = interaction.guild.id;
     const guildTimers = timerData[guildId];
 
-    const entry = guildTimers[id];
-    if (!entry)
-        return interaction.editReply({ content: `❌ no timer found with id ${'`' + id + '`'}` });
+    if (!guildTimers || Object.keys(guildTimers).length === 0)
+        return interaction.editReply({ content: "❌ no timers for this server" });
 
-    const output = `${'`' + id + '`'} | *${msToDuration(entry.timeMs)}* | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'}\n` +
-        `- **Channel:** ${mentionChannel(interaction.guild.channels.cache.get(entry.channelId))}\n` +
-        `- **Reset:** ${entry.messageReset ? `[YES] : ${entry.messageReset}` : (entry.sentReset ? '[YES]' : '[NO]')}\n` +
-        `- **Message:** ${entry.response}`;
+    if (Object.keys(guildTimers).length > 10) simplified = true;
 
-    const embed = createEmbed(`⏲️ Timer: **${id}}**`, output,
+    const output = [];
+
+    for (const id in guildTimers) {
+        const entry = guildTimers[id];
+        if (simplified) {
+            output.push(`${'`' + id + '`'} | *${msToDuration(entry.timeMs)}* | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'}`);
+        } else {
+            output.push(
+                `${'`' + id + '`'} | *${msToDuration(entry.timeMs)}* | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'}\n` +
+                `- **Channel:** ${mentionChannel(interaction.guild.channels.cache.get(entry.channelId))}\n` +
+                `- **Reset:** ${entry.messageReset ? `[YES] : ${entry.messageReset}` : (entry.sentReset ? '[YES]' : '[NO]')}\n` +
+                `- **Message:** ${entry.message}`
+            );
+        }
+    }
+
+    const embed = createEmbed(`⏲️ **${interaction.guild.name}'s** Timers`, output.join('\n'),
         COLORS.INFO, interaction.user, false, false, null );
 
     try { await interaction.editReply({ embeds: [embed] }); }
