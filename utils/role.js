@@ -18,7 +18,7 @@ function getRoles(member, interaction) {
         .reverse();
 
     // return
-    return roles.length ? roles.join('') : '[NONE]';
+    return roles.length ? roles.join(' ') : '[NONE]';
 }
 
 // mention role
