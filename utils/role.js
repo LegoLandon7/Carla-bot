@@ -1,5 +1,6 @@
 // resolve role
 function getRole(input, guild) {
+    // checks
     if (!guild || !input) return null;
 
     // ids
@@ -9,16 +10,19 @@ function getRole(input, guild) {
     return guild.roles.cache.find(r => r.name === input) || null;
 }
 
-// get roles
+// get member roles
 function getRoles(member, interaction) {
     const roles = member.roles.cache
         .filter(r => r.id !== interaction.guild.id)
         .map(r => r)
         .reverse();
+
+    // return
     return roles.length ? roles.join('') : '[NONE]';
 }
 
 // mention role
 function mentionRole(role) {return role ? `<@${role.id}>` : ""}
 
+// exports
 module.exports = {getRole, mentionRole, getRoles};

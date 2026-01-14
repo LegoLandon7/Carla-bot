@@ -1,5 +1,6 @@
 // resolve user
 async function getUser(input, guild) {
+    // checks
     if (!input || !guild) return null;
     input = input.trim();
 
@@ -17,11 +18,13 @@ async function getUser(input, guild) {
             (m.nickname && m.nickname.toLowerCase() === input.toLowerCase())
     );
 
+    // return
     return member ? member.user : null;
 }
 
 // get command user data (must defer reply and have target_user string field thats required)
 async function getCommandUserData(interaction) {
+    // checks
     const user = await getUser(interaction.options.getString('target_user'), interaction.guild);
 
     if (!user) {
@@ -29,19 +32,23 @@ async function getCommandUserData(interaction) {
         return null; // stop
     }
 
+    // data
     const member = await interaction.guild.members.fetch(user.id).catch(() => null);
     const commandUser = await interaction.guild.members.fetch(interaction.user.id).catch(() => null);
     const botMember = interaction.guild.members.me;
 
+    // fallback
     if (!member || !commandUser || !botMember) {
         await interaction.editReply({content: "❌ Could not fetch member data."});
         return null; // stop
     }
 
+    // return
     return { user, member, commandUser, botMember };
 }
 
 // mention user
 function mentionUser(user) {return user ? `<@${user.id}>` : ""}
 
+// exports
 module.exports = {getUser, getCommandUserData, mentionUser};

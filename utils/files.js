@@ -1,6 +1,8 @@
+// imports
 const fs = require('fs');
 const path = require('path');
 
+// ensure json
 function ensureJson(filePath, defaultData = {}) {
     const dir = path.dirname(filePath);
 
@@ -13,6 +15,7 @@ function ensureJson(filePath, defaultData = {}) {
     }
 }
 
+// read json
 function readJson(filePath, defaultData = {}) {
     try {
         ensureJson(filePath, defaultData);
@@ -23,6 +26,7 @@ function readJson(filePath, defaultData = {}) {
     }
 }
 
+// write json
 function writeJson(filePath, data) {
     try {
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
@@ -31,4 +35,5 @@ function writeJson(filePath, data) {
     }
 }
 
+// exports
 module.exports = {ensureJson, readJson, writeJson};

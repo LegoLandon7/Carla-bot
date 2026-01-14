@@ -1,5 +1,6 @@
 // resolve channel
 function getChannel(input, guild) {
+    // checks
     if (!guild || !input) return null;
 
     // mentions
@@ -16,4 +17,5 @@ function getChannel(input, guild) {
 // mention channel
 function mentionChannel(channel) {return channel ? `<#${channel.id}>` : ""}
 
+// exports
 module.exports = {getChannel, mentionChannel};

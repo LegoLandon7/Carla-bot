@@ -1,4 +1,4 @@
-// global
+// data
 const units = [
     { label: 'w', value: 1000 * 60 * 60 * 24 * 7 },
     { label: 'd', value: 1000 * 60 * 60 * 24 },
@@ -18,9 +18,11 @@ function isDuration(value) {
 
 // ms -> string format
 function msToDuration(ms) {
+    // data
     let remaining = ms;
     const parts = [];
 
+    // get units
     for (const u of units) {
         const amount = Math.floor(remaining / u.value);
         if (amount > 0) {
@@ -29,25 +31,32 @@ function msToDuration(ms) {
         }
     }
 
+    // return
     return parts.length ? parts.join('') : '0ms';
 }
 
 // string -> ms format
 function durationToMs(duration) {
+    // data
     let isNegative = false;
+
+    // negative
     if (duration.startsWith("-")) {
         isNegative = true;
         duration = duration.slice(1);
     }
 
+    // data
     const num = parseInt(duration, 10);
     const unit = duration.replace(/\d+/g, "");
 
+    // get units
     for (const u of units) {
         if (u.label === unit)
             return isNegative ? -num * u.value : num * u.value;
     }
 
+    // fallback
     return 0;
 }
 
@@ -66,4 +75,5 @@ function dateToDiscordTimestamp(date, style = 'F') {
     return `<t:${ts}:${style}>`;
 }
 
+// exports
 module.exports = {isMsValue, isDuration, msToDuration, durationToMs, msToDiscordTimestamp, dateToDiscordTimestamp};
