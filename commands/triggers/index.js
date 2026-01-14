@@ -5,7 +5,7 @@ const path = require('path');
 const data = new SlashCommandBuilder()
     .setName('triggers')
     .setDescription('Trigger commands')
-    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .setContexts(0);
 
 const subHandlers = {};

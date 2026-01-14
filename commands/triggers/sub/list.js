@@ -20,8 +20,8 @@ const handler = async (interaction) => {
     // permissions
     if (!interaction.inGuild())
         return interaction.editReply({ content: "❌ This command can only be used in servers." });
-    if (!hasPermission(interaction.member, PermissionFlagsBits.ManageGuild))
-        return interaction.editReply({ content: "❌ You need `Manage Guild` permission."});
+    if (!hasPermission(interaction.member, PermissionFlagsBits.ManageMessages))
+        return interaction.editReply({ content: "❌ You need `Manage Messages` permission."});
 
     // data
     const triggerData = readJson(path.resolve(__dirname, '../../../data/triggers.json'));
@@ -47,13 +47,13 @@ const handler = async (interaction) => {
                 `${'`' + id + '`'} | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'}\n` +
                 `- **Trigger:** ${entry.trigger}\n` +
                 `- **Response:** ${entry.response}\n` +
-                `- **Match Type:** [${entry.matchType.toUpperCase()}]` +
+                `- **Match Type:** [${entry.matchType.toUpperCase()}]\n` +
                 `- **Response Type:** [${entry.responseType.toUpperCase()}]`
             );
         }
     }
 
-    let embed = createEmbed(`⏲️ **${interaction.guild.name}'s** Triggers`, output.join('\n'),
+    let embed = createEmbed(`⏲️ **${interaction.guild.name}'s** Triggers`, output.join('\n\n'),
         COLORS.INFO, interaction.user, false, false, null );
 
     try { await interaction.editReply({ embeds: [embed] }); }

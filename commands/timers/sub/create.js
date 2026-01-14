@@ -50,8 +50,8 @@ const handler = async (interaction) => {
     // permissions
     if (!interaction.inGuild())
         return interaction.editReply({ content: "❌ This command can only be used in servers." });
-    if (!hasPermission(interaction.member, PermissionFlagsBits.ManageGuild))
-        return interaction.editReply({ content: "❌ You need `Manage Guild` permission."});
+    if (!hasPermission(interaction.member, PermissionFlagsBits.ManageMessages))
+        return interaction.editReply({ content: "❌ You need `Manage Messages` permission."});
 
     const timerData = readJson(path.resolve(__dirname, '../../../data/timers.json'));
 
