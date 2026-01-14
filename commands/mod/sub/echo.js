@@ -52,7 +52,7 @@ const handler = async (interaction) => {
         } else {
             await target_channel.send({ content: message });
         }
-        return interaction.editReply({ content: `✅ Successfully sent echo: **${message}**.`});
+        return interaction.editReply({ content: `✅ Successfully sent echo: **${message}**`});
     } catch (err) {
         console.error(err);
         return interaction.editReply({ content: "❌ Couldn't send echo. Check if I have permissions."});
