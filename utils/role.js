@@ -12,9 +12,9 @@ function getRole(input, guild) {
 
 // get member roles
 function getRoles(member, interaction) {
-    const roles = member.roles.cache
-    .filter(r => r.id !== interaction.guild.id)
-    .sort((a, b) => b.position - a.position);
+    const roles = [...member.roles.cache.values()]
+        .filter(r => r.id !== interaction.guild.id)
+        .sort((a, b) => b.position - a.position);
 
     // return
     return roles.length ? roles.join(' ') : '[NONE]';
