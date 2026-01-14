@@ -31,6 +31,14 @@ const data = new SlashCommandSubcommandBuilder()
                 { name: 'Starts with', value: 'starts' },
                 { name: 'Word', value: 'word' }
             ).setRequired(false))
+    .addStringOption(o => 
+        o.setName('response_type')
+            .setDescription('Respond a certain way')
+            .addChoices( 
+                { name: 'Normal', value: 'normal' },
+                { name: 'Custom', value: 'custom' },
+                { name: 'Reply', value: 'reply' }
+            ).setRequired(false))
 
 const handler = async (interaction) => {
     await interaction.deferReply();
@@ -41,6 +49,7 @@ const handler = async (interaction) => {
     const id = interaction.options.getString('id');
 
     const matchType = interaction.options.getString('match_type') || 'normal';
+    const responseType = interaction.options.getString('response_type') || 'normal';
 
     // permissions
     if (!interaction.inGuild())
@@ -72,7 +81,8 @@ const handler = async (interaction) => {
         trigger: newTrigger,
         response: response,
         enabled: true,
-        matchType: matchType
+        matchType: matchType,
+        responseType: responseType
     };
 
     writeJson(path.resolve(path.resolve(__dirname, '../../../data/triggers.json')), triggerData);

@@ -1,6 +1,9 @@
+// imports
+const { mentionUser } = require("../utils/user.js");
 const { ensureJson, readJson } = require("../utils/files.js");
 const path = require('path');
 
+// data
 ensureJson(path.resolve(__dirname, '../data/triggers.json'));
 
 let data = {};
@@ -29,7 +32,7 @@ async function handleTriggers(client) {
             const trigger = entry.trigger;
             const input = message.content;
             
-            // check if trigger should send
+            // entry type
             let send = false;
 
             switch (entry.matchType) {
@@ -65,8 +68,26 @@ async function handleTriggers(client) {
                     break;
             }
 
+            // response type
+            let newReponse = entry.response;
+            let reply = false;
+
+            switch (entry.responseType) {
+                case 'custom': // custom
+                    newReponse = newReponse.replaceAll('{user.mention}', mentionUser(message.author));
+                    newReponse = newReponse.replaceAll('{user.username}', message.author.name);
+                    newReponse = newReponse.replaceAll('{user.nickname}', message.member.displayName);
+                    break;
+                case 'reply': // reply
+                    reply = true;
+                case 'normal': default: // normal
+                    newReponse = entry.response;
+                    break;
+            }
+
+            // send
             if (send) try {
-                await message.channel.send(entry.response);
+                reply ? await message.reply(newReponse) : await message.channel.send(newReponse);
                 cooldowns[guildId] = Date.now();
                 break;
             } catch(err) {console.error(err)}

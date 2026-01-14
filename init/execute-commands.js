@@ -7,8 +7,6 @@ require('dotenv').config();
 // commandKey = commandName or commandName.subcommandName
 const serverCooldowns = new Map();
 
-const devs = process.env.DEV_IDS;
-
 function handleSlashCommands(client) {
     client.on('interactionCreate', async (interaction) => {
         if (!interaction.isChatInputCommand()) return;
@@ -26,7 +24,7 @@ function handleSlashCommands(client) {
         ]);*/
 
         // Bypass cooldowns for devs
-        canBypass = devs.contains(interaction.user.id);
+        canBypass = process.env.DEV_IDS.split(',').map(id => id.trim()).includes(interaction.user.id);
 
         // --- Cooldown logic ---
         try {
