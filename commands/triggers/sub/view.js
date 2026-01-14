@@ -36,8 +36,8 @@ const handler = async (interaction) => {
         return interaction.editReply({ content: `❌ no trigger found with id ${'`' + id + '`'}` });
 
     const output = `${'`' + id + '`'} | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'}\n` +
-        `- **Message:** ${entry.response}\n` +
         `- **Trigger:** ${entry.trigger}\n` +
+        `- **Response:** ${entry.response}\n` +
         `- **Match Type:** [${entry.matchType.toUpperCase()}]`;
 
     if (Object.keys(guildTriggers).length > 10) simplified = true;

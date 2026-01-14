@@ -47,7 +47,7 @@ const handler = async (interaction) => {
                 `${'`' + id + '`'} | *${msToDuration(entry.timeMs)}* | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'}\n` +
                 `- **Channel:** ${mentionChannel(interaction.guild.channels.cache.get(entry.channelId))}\n` +
                 `- **Reset:** ${entry.messageReset ? `[YES] : ${entry.messageReset}` : (entry.sentReset ? '[YES]' : '[NO]')}\n` +
-                `- **Message:** ${entry.message}`
+                `- **Response:** ${entry.response}`
             );
         }
     }

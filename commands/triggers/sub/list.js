@@ -45,8 +45,8 @@ const handler = async (interaction) => {
         } else {
             output.push(
                 `${'`' + id + '`'} | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'}\n` +
-                `- **Message:** ${entry.message}\n` +
                 `- **Trigger:** ${entry.trigger}\n` +
+                `- **Response:** ${entry.response}\n` +
                 `- **Match Type:** [${entry.matchType.toUpperCase()}]`
             );
         }

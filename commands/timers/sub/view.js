@@ -38,7 +38,7 @@ const handler = async (interaction) => {
     const output = `${'`' + id + '`'} | *${msToDuration(entry.timeMs)}* | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'}\n` +
         `- **Channel:** ${mentionChannel(interaction.guild.channels.cache.get(entry.channelId))}\n` +
         `- **Reset:** ${entry.messageReset ? `[YES] : ${entry.messageReset}` : (entry.sentReset ? '[YES]' : '[NO]')}\n` +
-        `- **Message:** ${entry.response}`;
+        `- **Response:** ${entry.response}`;
 
     const embed = createEmbed(`⏲️ Timer: **${id}}**`, output,
         COLORS.INFO, interaction.user, false, false, null );
