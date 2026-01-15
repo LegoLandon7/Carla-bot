@@ -26,16 +26,16 @@ const handler = async (interaction) => {
 
     // embed
     const embed = createEmbed(`📝 **${user.tag}'s** Information`,
-        `**• Mention:** ${user}\n` +
-        `**• Username:** *${user.tag}*\n` +
-        `**• Nickname:** ${member.nickname ? `*${member.nickname}*` : '[NONE]'}\n` +
-        `**• ID:** ${'`' + user.id + '`'}\n` +
-        `**• Is Bot:** ${user.bot ? '[YES]' : '[NO]'}\n` +
-        `**• Is Boosting:** ${member.premiumSince ? '[YES]' : '[NO]'}\n` +
-        `**• Server Join Date:** ${dateJoined}\n` +
-        `**• Account Creation:** ${dateMade}\n` +
-        `**• Avatar:** [AVATAR](${avatarURL})\n` +
-        `**• Roles:** ${roles}\n`,
+        `**- Mention:** ${user}\n` +
+        `**- Username:** *${user.tag}*\n` +
+        `**- Nickname:** ${member.nickname ? `*${member.nickname}*` : '[NONE]'}\n` +
+        `**- ID:** ${'`' + user.id + '`'}\n` +
+        `**- Is Bot:** ${user.bot ? '[YES]' : '[NO]'}\n` +
+        `**- Is Boosting:** ${member.premiumSince ? '[YES]' : '[NO]'}\n` +
+        `**- Server Join Date:** ${dateJoined}\n` +
+        `**- Account Creation:** ${dateMade}\n` +
+        `**- Avatar:** [AVATAR](${avatarURL})\n` +
+        `**- Roles:** ${roles}\n`,
         COLORS.INFO, user, false, avatarURL, null);
 
     await interaction.editReply({ embeds: [embed] });

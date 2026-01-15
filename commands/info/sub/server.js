@@ -33,14 +33,14 @@ const handler = async (interaction) => {
 
     // embed
     const embed = createEmbed(`📝 **${guild.name}'s** Information`,
-        `**• Name:** *${guild.name}*\n` +
-        `**• ID:** ${'`' + guild.id + '`'}\n` +
-        `**• Owner:** *${owner.user.tag}*\n` +
-        `**• Members:** *${totalMembers}*\n` +
-        `**• Channels:** *${totalChannels}*\n` +
-        `**• Boosts:** ${boostCount} (Level ${boostLevel})\n` +
-        `**• Server Creation:** ${createdAt}\n` +
-        `**• Icon:** [ICON](${iconURL})\n`,
+        `**- Name:** *${guild.name}*\n` +
+        `**- ID:** ${'`' + guild.id + '`'}\n` +
+        `**- Owner:** *${owner.user.tag}*\n` +
+        `**- Members:** *${totalMembers}*\n` +
+        `**- Channels:** *${totalChannels}*\n` +
+        `**- Boosts:** ${boostCount} (Level ${boostLevel})\n` +
+        `**- Server Creation:** ${createdAt}\n` +
+        `**- Icon:** [ICON](${iconURL})\n`,
         COLORS.INFO, user, false, iconURL, null
     );
 

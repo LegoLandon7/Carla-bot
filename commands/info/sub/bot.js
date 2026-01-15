@@ -23,15 +23,15 @@ const handler = async (interaction) => {
 
     // embed
     const embed = createEmbed(`📝 **${user.tag}'s** Information`,
-        `**• Mention:** ${mentionUser(user)}\n` +
-        `**• Username:** *${user.tag}*\n` +
-        `**• ID:** ${'`' + user.id + '`'}\n` +
-        `**• Owner:** *cc_landonlego*\n` +
-        `**• Guilds:** *${size}*\n` +
-        `**• Uptime:** *${uptime}h*\n` +
-        `**• Memory Usage:** *${memory}*\n` +
-        `**• Bot Creation:** ${dateMade}\n` +
-        `**• Links:** [Avatar](${avatarURL}) • [Github](${gitURL}) • [Invite](${inviteURL})`,
+        `**- Mention:** ${mentionUser(user)}\n` +
+        `**- Username:** *${user.tag}*\n` +
+        `**- ID:** ${'`' + user.id + '`'}\n` +
+        `**- Owner:** *cc_landonlego*\n` +
+        `**- Guilds:** *${size}*\n` +
+        `**- Uptime:** *${uptime}h*\n` +
+        `**- Memory Usage:** *${memory}*\n` +
+        `**- Bot Creation:** ${dateMade}\n` +
+        `**- Links:** [Avatar](${avatarURL}) - [Github](${gitURL}) - [Invite](${inviteURL})`,
         COLORS.INFO, user, false, avatarURL, null);
 
     await interaction.editReply({ embeds: [embed] });

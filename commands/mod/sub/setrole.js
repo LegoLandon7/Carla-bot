@@ -4,7 +4,7 @@ const { hasPermission, botHasPermission } = require('../../../utils/permissions.
 const { PermissionFlagsBits } = require('discord.js');
 
 const data = new SlashCommandSubcommandBuilder()
-    .setName('role')
+    .setName('editrole')
     .setDescription('Adds or removes a role from a user')
     .addStringOption(o =>
         o.setName('target_user')

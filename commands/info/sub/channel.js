@@ -26,11 +26,11 @@ const handler = async (interaction) => {
 
     // embed
     const embed = createEmbed(`📝 **${channel.name}'s** Information`,
-        `**• Mention:** ${channel.url}\n` +
-        `**• Name:** *${channel.name}*\n` +
-        `**• ID:** ${'`' + channel.id + '`'}\n` +
-        `**• Channel Creation:** ${creationDate}\n` +
-        `**• Members:** ${channel.permissionOverwrites.cache.filter(o => o.type === 0).size}\n`,
+        `**- Mention:** ${channel.url}\n` +
+        `**- Name:** *${channel.name}*\n` +
+        `**- ID:** ${'`' + channel.id + '`'}\n` +
+        `**- Channel Creation:** ${creationDate}\n` +
+        `**- Members:** ${channel.permissionOverwrites.cache.filter(o => o.type === 0).size}\n`,
         COLORS.INFO, user, false, null, null);
 
     await interaction.editReply({ embeds: [embed] });

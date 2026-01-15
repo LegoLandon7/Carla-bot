@@ -26,14 +26,14 @@ const handler = async (interaction) => {
     const creationDate = dateToDiscordTimestamp(role.createdAt);
     // embed
     const embed = createEmbed(`📝 **${role.name}'s** Information`,
-        `**• Mention:** ${role}\n` +
-        `**• Name:** *${role.name}*\n` +
-        `**• ID:** ${'`' + role.id + '`'}\n` +
-        `**• Color:** *${role.hexColor}*\n` +
-        `**• Hoisted:** *${role.hoist ? '[YES]' : '[NO]'}*\n` +
-        `**• Mentionable:** *${role.mentionable ? '[YES' : '[NO]'}*\n` +
-        `**• Role Creation:** ${creationDate}\n` +
-        `**• Members:** ${role.members.size}\n`,
+        `**- Mention:** ${role}\n` +
+        `**- Name:** *${role.name}*\n` +
+        `**- ID:** ${'`' + role.id + '`'}\n` +
+        `**- Color:** *${role.hexColor}*\n` +
+        `**- Hoisted:** *${role.hoist ? '[YES]' : '[NO]'}*\n` +
+        `**- Mentionable:** *${role.mentionable ? '[YES' : '[NO]'}*\n` +
+        `**- Role Creation:** ${creationDate}\n` +
+        `**- Members:** ${role.members.size}\n`,
         COLORS.INFO, user, false, iconURL, null);
 
     await interaction.editReply({ embeds: [embed] });

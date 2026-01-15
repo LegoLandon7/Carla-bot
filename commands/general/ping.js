@@ -12,7 +12,7 @@ const execute = async (interaction) => {
     const latency = Date.now() - interaction.createdTimestamp;
     const wsPing = Math.round(interaction.client.ws.ping);
 
-    const embed = createEmbed('🏓 **Pong**', `**• Latency: **${latency}ms\n**• Websocket: **${wsPing}ms`,
+    const embed = createEmbed('🏓 **Pong**', `**- Latency: **${latency}ms\n**- Websocket: **${wsPing}ms`,
             COLORS.INFO, interaction.user, false);
     await interaction.editReply({embeds: [embed]});
 }
