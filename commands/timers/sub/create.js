@@ -44,7 +44,7 @@ const handler = async (interaction) => {
 
     const channel = interaction.options.getChannel('target_channel');
 
-    const reponse = interaction.options.getString('response');
+    const response = interaction.options.getString('response');
     const id = interaction.options.getString('id');
 
     // permissions
@@ -59,6 +59,8 @@ const handler = async (interaction) => {
     const guildId = interaction.guild.id;
     const channelId = channel.id;
 
+    if (response.length > 250 || id.length > 250)
+        return interaction.editReply({ content: "❌ Max message length of 250."});
     if (timerData?.[guildId]?.[id])
         return interaction.editReply({content: "❌ A timer with the same id already exists."});
     if (!msTime || msTime <= 0)
@@ -72,7 +74,7 @@ const handler = async (interaction) => {
 
     timerData[guildId][id] = {
         timeMs: msTime,
-        response: reponse,
+        response: response,
         channelId: channelId,
         enabled: true,
         sentReset: sentReset,

@@ -1,5 +1,7 @@
 // imports
 const { mentionUser } = require("../utils/user.js");
+const { mentionChannel } = require("../utils/channel.js");
+const { msToDiscordTimestamp, dateToDiscordTimestamp } = require("../utils/time.js");
 const { ensureJson, readJson } = require("../utils/files.js");
 const path = require('path');
 
@@ -11,6 +13,8 @@ let cooldowns = {};
 
 async function handleTriggers(client) {
     client.on('messageCreate', async (message) => {
+        if (message.length > 500) return;
+
         // read data
         data = readJson(path.resolve(__dirname, '../data/triggers.json'));
 
@@ -69,25 +73,52 @@ async function handleTriggers(client) {
             }
 
             // response type
-            let newReponse = entry.response;
+            let newResponse = entry.response;
             let reply = false;
 
             switch (entry.responseType) {
                 case 'custom': // custom
-                    newReponse = newReponse.replaceAll('{user.mention}', mentionUser(message.author));
-                    newReponse = newReponse.replaceAll('{user.username}', message.author.name);
-                    newReponse = newReponse.replaceAll('{user.nickname}', message.member.displayName);
+                    newResponse = newResponse.replaceAll('{author.mention}', mentionUser(message.author));
+                    newResponse = newResponse.replaceAll('{author.username}', message.author.name);
+                    newResponse = newResponse.replaceAll('{author.nickname}', message.member.displayName);
+                    newResponse = newResponse.replaceAll('{author.message}', message);
+                    newResponse = newResponse.replaceAll('{author.id}', message.author.id);
+                    newResponse = newResponse.replaceAll('{author.avatar}', message.author.displayAvatarURL());
+                    newResponse = newResponse.replaceAll('{author.tag}', message.author.tag);
+
+                    newResponse = newResponse.replaceAll('{message.content}', message.content);
+                    newResponse = newResponse.replaceAll('{message.length}', message.content.length.toString());
+                    newResponse = newResponse.replaceAll('{message.id}', message.id);
+
+                    newResponse = newResponse.replaceAll('{channel.name}', message.channel.name);
+                    newResponse = newResponse.replaceAll('{channel.mention}', mentionChannel(message.channel));
+
+                    newResponse = newResponse.replaceAll('{guild.name}', message.guild.name);
+                    newResponse = newResponse.replaceAll('{guild.memberCount}', message.guild.memberCount.toString());
+
+                    const now = Date.now();
+                    newResponse = newResponse.replaceAll('{time.now}', dateToDiscordTimestamp(now, 'T'));
+                    newResponse = newResponse.replaceAll('{time.relative}', dateToDiscordTimestamp(now, 'R'));
+                    newResponse = newResponse.replaceAll('{date.now}', dateToDiscordTimestamp(now, 'D'));
+
+                    const target = message.mentions.users.first();
+                    if (target) {
+                        newResponse = newResponse.replaceAll('{target.mention}', mentionUser(target));
+                        newResponse = newResponse.replaceAll('{target.username}', target.name);
+                    }
+
+                    newResponse = newResponse.replaceAll('{trigger}', trigger);
                     break;
                 case 'reply': // reply
                     reply = true;
                 case 'normal': default: // normal
-                    newReponse = entry.response;
+                    newResponse = entry.response;
                     break;
             }
 
             // send
             if (send) try {
-                reply ? await message.reply(newReponse) : await message.channel.send(newReponse);
+                reply ? await message.reply(newResponse) : await message.channel.send(newResponse);
                 cooldowns[guildId] = Date.now();
                 break;
             } catch(err) {console.error(err)}

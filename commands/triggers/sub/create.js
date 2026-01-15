@@ -62,6 +62,8 @@ const handler = async (interaction) => {
     // checks
     const guildId = interaction.guild.id;
 
+    if (response.length > 250 || trigger.length > 250 || id.length > 250)
+        return interaction.editReply({ content: "❌ Max message length of 250."});
     if (triggerData?.[guildId]?.[id])
         return interaction.editReply({content: "❌ A trigger with the same id already exists."});
     let sameName = false;
