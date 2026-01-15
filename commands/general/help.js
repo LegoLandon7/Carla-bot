@@ -5,11 +5,7 @@ const { Pagination } = require('pagination.djs');
 
 const data = new SlashCommandBuilder()
     .setName('help')
-    .setDescription('Explains every command')
-    .addNumberOption(o => 
-        o.setName('page')
-        .setDescription('The page number to view')
-        .setRequired(false))
+    .setDescription('Explains every command');
 
 const execute = async (interaction) => {
     await interaction.deferReply();
@@ -68,11 +64,6 @@ const execute = async (interaction) => {
         "\n`translate detect-language` - detects language using google translate" +
         "\n`tts speak` - send an mp3 of tts using google tts"
     });
-
-    // page data
-    let currentPage = interaction.options.getNumber('page') || 1;
-    if (currentPage > 5) currentPage = 5;
-    if (currentPage < 1) currentPage = 1;
 
     // build embeds
     const embeds = pages.map(p => 
