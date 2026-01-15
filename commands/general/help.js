@@ -71,8 +71,7 @@ const execute = async (interaction) => {
     );
 
     // init pagination
-    const pagination = new Pagination(interaction);
-    pagination
+    const pagination = new Pagination(interaction)
         .setEmbeds(embeds)
         .setAuthorizedUsers([interaction.user.id])
         .setIdle(60000) // 60 seconds
