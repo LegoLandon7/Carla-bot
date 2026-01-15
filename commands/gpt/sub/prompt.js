@@ -29,7 +29,7 @@ const handler = async (interaction) => {
     const fullPrompt = userHistory[userId].join('\n');
 
     const output = await getAIResponse(fullPrompt, CONTEXTS.BASE_CONTEXT, 'gpt-5-mini');
-    await interaction.editReply(`**Prompt:** ${prompt}\n**Output:** ${output}`);
+    await interaction.editReply(`**Prompt:** ${prompt}\n\n**Output:** ${output}`);
 
     userHistory[userId].push(`Bot: ${output}`);
     if (userHistory[userId].length > 10)

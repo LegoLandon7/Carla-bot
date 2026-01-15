@@ -28,7 +28,8 @@ const handler = async (interaction) => {
     // entry
     const guildId = interaction.guild.id;
     const entry = timerData?.[guildId]?.[id]
-    if (!entry) return interaction.editReply({content: `❌ Timer with id ${'`' + id + '`'} not found.`});
+    if (!entry) 
+        return interaction.editReply({ content: `⚠️ no timer found with id ${'`' + id + '`'}` });
 
     // delete
     delete timerData[guildId][id];

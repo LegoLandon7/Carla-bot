@@ -33,7 +33,7 @@ const handler = async (interaction) => {
 
     const entry = guildTriggers[id];
     if (!entry)
-        return interaction.editReply({ content: `❌ no trigger found with id ${'`' + id + '`'}` });
+        return interaction.editReply({ content: `⚠️ no trigger found with id ${'`' + id + '`'}` });
 
     const output = `${'`' + id + '`'} | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'}\n` +
         `- **Trigger:** ${entry.trigger}\n` +

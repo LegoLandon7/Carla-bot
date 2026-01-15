@@ -33,7 +33,7 @@ const handler = async (interaction) => {
 
     const entry = guildTimers[id];
     if (!entry)
-        return interaction.editReply({ content: `❌ no timer found with id ${'`' + id + '`'}` });
+        return interaction.editReply({ content: `⚠️ no timer found with id ${'`' + id + '`'}` });
 
     const output = `${'`' + id + '`'} | *${msToDuration(entry.timeMs)}* | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'}\n` +
         `- **Channel:** ${mentionChannel(interaction.guild.channels.cache.get(entry.channelId))}\n` +

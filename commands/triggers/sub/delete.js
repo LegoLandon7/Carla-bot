@@ -28,7 +28,8 @@ const handler = async (interaction) => {
     // entry
     const guildId = interaction.guild.id;
     const entry = triggerData?.[guildId]?.[id]
-    if (!entry) return interaction.editReply({content: `❌ Trigger with id ${'`' + id + '`'} not found.`});
+    if (!entry)
+        return interaction.editReply({ content: `⚠️ no trigger found with id ${'`' + id + '`'}` });
 
     // delete
     delete triggerData[guildId][id];
