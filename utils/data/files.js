@@ -1,6 +1,6 @@
 // imports
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 // ensure json
 function ensureJson(filePath, defaultData = {}) {
@@ -19,7 +19,8 @@ function ensureJson(filePath, defaultData = {}) {
 function readJson(filePath, defaultData = {}) {
     try {
         ensureJson(filePath, defaultData);
-        return JSON.parse(fs.readFileSync(filePath, "utf8"));
+        const data = fs.readFileSync(filePath, "utf8");
+        return JSON.parse(data);
     } catch (err) {
         console.error(`Failed to read JSON: ${filePath}`, err);
         return defaultData;
@@ -36,4 +37,4 @@ function writeJson(filePath, data) {
 }
 
 // exports
-module.exports = {ensureJson, readJson, writeJson};
+module.exports = { ensureJson, readJson, writeJson };

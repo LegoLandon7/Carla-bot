@@ -34,17 +34,17 @@ async function getCommandUserData(interaction) {
 
     // data
     const member = await interaction.guild.members.fetch(user.id).catch(() => null);
-    const commandUser = await interaction.guild.members.fetch(interaction.user.id).catch(() => null);
+    const commandMember = await interaction.guild.members.fetch(interaction.user.id).catch(() => null);
     const botMember = interaction.guild.members.me;
 
     // fallback
-    if (!member || !commandUser || !botMember) {
+    if (!member || !commandMember || !botMember) {
         await interaction.editReply({content: "❌ Could not fetch member data."});
         return null; // stop
     }
 
     // return
-    return { user, member, commandUser, botMember };
+    return { user, member, commandMember, botMember };
 }
 
 // mention user

@@ -1,5 +1,5 @@
 const { SlashCommandSubcommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
-const { COLORS, createEmbed} = require('../../../utils/embed.js');
+const { COLORS, createEmbed} = require('../../../utils/discord-utils/embed.js');
 
 const data = new SlashCommandSubcommandBuilder()
     .setName('avatar')

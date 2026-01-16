@@ -1,7 +1,9 @@
-const { SlashCommandSubcommandBuilder, EmbedBuilder, MessageFlags, PermissionFlagsBits, AttachmentBuilder } = require('discord.js');
-const { ttsOutput } = require('../../../services/tts_model.js');
-const { detectLanguage, translateText, languages } = require('../../../services/translate_model.js');
+// imports
+const { SlashCommandSubcommandBuilder, AttachmentBuilder } = require('discord.js');
+const { ttsOutput } = require('../../../services/tts-model.js');
+const { detectLanguage, translateText, languages } = require('../../../services/translate-model.js');
 
+// subcommand
 const data = new SlashCommandSubcommandBuilder()
     .setName('text')
     .setDescription('Translates the text')
@@ -24,6 +26,7 @@ const data = new SlashCommandSubcommandBuilder()
         .setDescription('Speak the translation?')
         .setRequired(false));
 
+// handler
 const handler = async (interaction) => {
     await interaction.deferReply();
 
@@ -37,6 +40,7 @@ const handler = async (interaction) => {
 
     const speak = interaction.options.getBoolean('speak');
 
+    // get tts objects
     try {
         const output = await translateText(text, from, to);
         if (!output) 
@@ -72,9 +76,11 @@ const handler = async (interaction) => {
             await interaction.editReply({ content: `🌐 **${originalLang}** -> **${translatedLang}** \n\n${'`' + text + '`'}\n->\n${'`' + output + '`'}`});
         }
     } catch (err) {
+        // error
         console.error(err);
         return interaction.editReply({ content: "⚠️ Something went wrong"});
     }
 }
 
+// exports
 module.exports = { data, handler };

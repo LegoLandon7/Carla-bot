@@ -1,9 +1,9 @@
-const { SlashCommandSubcommandBuilder, EmbedBuilder, MessageFlags, PermissionFlagsBits } = require('discord.js');
-const { ensureJson, readJson, writeJson } = require('../../../utils/files.js');
-const { hasPermission, botHasPermission } = require('../../../utils/permissions.js');
-const { durationToMs, msToDuration } = require('../../../utils/time.js');
+const { SlashCommandSubcommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { readJson, writeJson } = require('../../../utils/data/files.js');
+const { hasPermission } = require('../../../utils/discord-utils/permissions.js');
 const path = require('path');
 
+// subcommand
 const data = new SlashCommandSubcommandBuilder()
     .setName('delete')
     .setDescription('Deletes a timer')
@@ -12,6 +12,7 @@ const data = new SlashCommandSubcommandBuilder()
             .setDescription('The id of the timer to delete')
             .setRequired(true));
 
+// handler
 const handler = async (interaction) => {
     await interaction.deferReply();
     
@@ -29,7 +30,7 @@ const handler = async (interaction) => {
     const guildId = interaction.guild.id;
     const entry = timerData?.[guildId]?.[id]
     if (!entry) 
-        return interaction.editReply({ content: `⚠️ no timer found with id ${'`' + id + '`'}` });
+        return interaction.editReply({ content: `⚠️ no timer found with id \`${id}\`` });
 
     // delete
     delete timerData[guildId][id];
@@ -38,7 +39,8 @@ const handler = async (interaction) => {
     writeJson(path.resolve(path.resolve(__dirname, '../../../data/timers.json')), timerData);
     
     // message
-    return interaction.editReply({ content: `✅ Succesfully deleted timer with id: ${'`' + id + '`'}`});
+    return interaction.editReply({ content: `✅ Succesfully deleted timer with id: \`${id}\``});
 };
 
+// exports
 module.exports = { data, handler };

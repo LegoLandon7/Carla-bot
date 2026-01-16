@@ -1,10 +1,13 @@
+// imports
 require('dotenv').config();
 const OpenAI = require('openai');
 
+// client
 const client = new OpenAI({
     apiKey: process.env.OPENAI_KEY
 });
 
+// ai contexts
 const CONTEXTS = {
     BASE_CONTEXT: "Context:\n" +
         "- You are a friendly Discord (markdown, user ids valid) ai bot.\n" +
@@ -16,6 +19,7 @@ const CONTEXTS = {
         "- You are only a language model."
 }
 
+// main ai response
 async function getAIResponse(textInput, context = null, modelName = 'gpt-5-nano') {
     // input string
     const aiInput = `${context}\n\n${textInput}`;
@@ -26,8 +30,10 @@ async function getAIResponse(textInput, context = null, modelName = 'gpt-5-nano'
         input: aiInput,
     });
 
+    // return
     const text = response.output_text || response.output?.[0]?.content?.[0]?.text || "⚠️ No AI response [ERROR]";
     return text;
 }
 
+// exports
 module.exports = { getAIResponse, CONTEXTS };

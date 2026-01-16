@@ -1,7 +1,9 @@
+// imports
 const { SlashCommandSubcommandBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js');
-const { getCommandUserData } = require('../../../utils/user.js');
-const { hasPermission, botHasPermission } = require('../../../utils/permissions.js');
+const { getCommandUserData } = require('../../../utils/discord-data/user.js');
+const { hasPermission, botHasPermission } = require('../../../utils/discord-utils/permissions.js');
 
+// subcommand
 const data = new SlashCommandSubcommandBuilder()
     .setName('unban')
     .setDescription('Unbans a user')
@@ -16,6 +18,7 @@ const data = new SlashCommandSubcommandBuilder()
          .setRequired(false)
     );
 
+// hanlder
 const handler = async (interaction) => {
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
@@ -24,7 +27,7 @@ const handler = async (interaction) => {
 
     // data
     const userData = await getCommandUserData(interaction);
-    if (!userData) return; const { user, member, commandUser, botMember } = userData;
+    if (!userData) return; const { user, member, commandMember, botMember } = userData;
 
     const reason = interaction.options.getString('reason') || 'No reason provided';
 
@@ -48,4 +51,5 @@ const handler = async (interaction) => {
     }
 };
 
+// exports
 module.exports = { data, handler };

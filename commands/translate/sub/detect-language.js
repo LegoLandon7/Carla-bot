@@ -1,7 +1,8 @@
-const { SlashCommandSubcommandBuilder, EmbedBuilder, MessageFlags, PermissionFlagsBits, AttachmentBuilder } = require('discord.js');
-const { ttsOutput } = require('../../../services/tts_model.js');
-const { detectLanguage, translateText, languages } = require('../../../services/translate_model.js');
+// imports
+const { SlashCommandSubcommandBuilder } = require('discord.js');
+const { detectLanguage, languages } = require('../../../services/translate-model.js');
 
+// subcommand
 const data = new SlashCommandSubcommandBuilder()
     .setName('detect-language')
     .setDescription('Detects the texts language')
@@ -10,6 +11,7 @@ const data = new SlashCommandSubcommandBuilder()
         .setDescription('The text to detect the language from')
         .setRequired(true));
 
+// handler
 const handler = async (interaction) => {
     await interaction.deferReply();
 
@@ -29,4 +31,5 @@ const handler = async (interaction) => {
     }
 }
 
+// exports
 module.exports = { data, handler };

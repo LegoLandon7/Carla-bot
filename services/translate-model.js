@@ -1,3 +1,4 @@
+// imports
 const { Translate } = require('@google-cloud/translate').v2;
 const translate = new Translate();
 
@@ -64,6 +65,7 @@ async function detectLanguage(text, mapLang = false) {
     return ttsLang;
 }
 
+// main translate
 async function translateText(text, from = 'auto', to = 'en') {
     // detect
     if (from === 'auto') {
@@ -83,8 +85,5 @@ async function translateText(text, from = 'auto', to = 'en') {
     }
 }
 
+// exports
 module.exports = { detectLanguage, translateText, languages };
-
-
-
-

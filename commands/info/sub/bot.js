@@ -1,7 +1,7 @@
 const { SlashCommandSubcommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
-const { COLORS, createEmbed} = require('../../../utils/embed.js');
-const { mentionUser } = require('../../../utils/user.js');
-const { dateToDiscordTimestamp } = require('../../../utils/time.js');
+const { COLORS, createEmbed} = require('../../../utils/discord-utils/embed.js');
+const { mentionUser } = require('../../../utils/discord-data/user.js');
+const { dateToDiscordTimestamp } = require('../../../utils/other/time.js');
 
 const data = new SlashCommandSubcommandBuilder()
     .setName('bot')
@@ -12,7 +12,7 @@ const handler = async (interaction) => {
 
     // data
     const user = interaction.client.user;
-    const size = interaction.client.guilds.cache.size
+    const size = interaction.client.guilds.cache.size;
     const uptime = Math.floor(process.uptime() / 60 / 60);
     const memory = (Math.round(process.memoryUsage().rss / 1024 / 1024)) + "MB";
 

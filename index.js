@@ -3,14 +3,14 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 
-const { Client, GatewayIntentBits, Partials, Collection, ActivityType, PresenceUpdateStatus, Events, REST, Routes } = require('discord.js');
+const { Client, GatewayIntentBits } = require('discord.js');
 
 const { retrieveCommands } = require('./init/retrieve-commands');
 const { handleSlashCommands } = require('./init/execute-commands');
 const { setPresence } = require('./init/set-presence');
 
-const { handleTimers, handleTimersMessages } = require('./command-handlers/timer.js');
-const { handleTriggers } = require('./command-handlers/trigger.js');
+const { handleTimers, handleTimersMessages } = require('./command-handlers/timers.js');
+const { handleTriggers } = require('./command-handlers/triggers.js');
 
 // client
 const client = new Client({

@@ -1,9 +1,10 @@
-const { SlashCommandSubcommandBuilder, EmbedBuilder, MessageFlags, PermissionFlagsBits } = require('discord.js');
-const { ensureJson, readJson, writeJson } = require('../../../utils/files.js');
-const { hasPermission, botHasPermission } = require('../../../utils/permissions.js');
-const { durationToMs, msToDuration } = require('../../../utils/time.js');
+// imports
+const { SlashCommandSubcommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { readJson, writeJson } = require('../../../utils/data/files.js');
+const { hasPermission, } = require('../../../utils/discord-utils/permissions.js');
 const path = require('path');
 
+// subcommand
 const data = new SlashCommandSubcommandBuilder()
     .setName('toggle')
     .setDescription('Enables / disables a trigger')
@@ -20,6 +21,7 @@ const data = new SlashCommandSubcommandBuilder()
                 { name: 'Disable', value: 'disable' }
             ).setRequired(false));
 
+// handler
 const handler = async (interaction) => {
     await interaction.deferReply();
 
@@ -39,7 +41,7 @@ const handler = async (interaction) => {
     const guildId = interaction.guild.id;
     const entry = triggerData?.[guildId]?.[id]
     if (!entry)
-        return interaction.editReply({ content: `⚠️ no trigger found with id ${'`' + id + '`'}` });
+        return interaction.editReply({ content: `⚠️ no trigger found with id \`${id}\`` });
     const action = !entry.enabled;
 
     // toggle
@@ -49,10 +51,12 @@ const handler = async (interaction) => {
         case 'disable': triggerData[guildId][id].enabled = false; break;
     }
 
+    // write data
     writeJson(path.resolve(path.resolve(__dirname, '../../../data/triggers.json')), triggerData);
     
     // message
-    return interaction.editReply({ content: `✅ Succesfully ${action ? "**enabled**" : "**disabled**"} trigger with id: ${'`' + id + '`'}`});
+    return interaction.editReply({ content: `✅ Succesfully ${action ? "**enabled**" : "**disabled**"} trigger with id: \`${id}\``});
 };
 
+// exports
 module.exports = { data, handler };

@@ -3,6 +3,7 @@ const { PermissionsBitField, PermissionFlagsBits } = require("discord.js");
 
 // member permissions
 function hasPermission(member, perms) {
+    // checks
      if (!member) return false;
     perms = Array.isArray(perms) ? perms : [perms];
 
@@ -19,9 +20,12 @@ function hasPermission(member, perms) {
 
 // bot has permissions
 function botHasPermission(client, guild, perms) {
+    // checks
     if (!client.user || !guild) return false;
     const botMember = guild.members.cache.get(client.user.id);
     if (!botMember) return false;
+
+    // return
     return hasPermission(botMember, perms);
 }
 

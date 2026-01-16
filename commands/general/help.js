@@ -1,12 +1,14 @@
-// help.js
-const { createEmbed, COLORS } = require('../../utils/embed.js');
-const { SlashCommandBuilder, MessageFlags } = require('discord.js');
+// imports
+const { createEmbed, COLORS } = require('../../utils/discord-utils/embed.js');
+const { SlashCommandBuilder } = require('discord.js');
 const { Pagination } = require('pagination.djs');
 
+// subcommand
 const data = new SlashCommandBuilder()
     .setName('help')
     .setDescription('Explains every command');
 
+// execute
 const execute = async (interaction) => {
     await interaction.deferReply();
 
@@ -40,20 +42,20 @@ const execute = async (interaction) => {
     });
     pages.push({title: "**Page 4/6: Timer Commands** `/timers`", content: 
         "\n*note: timers automatically send messages in channels at certain intervals*\n" +
-        "\n`create` - creates a timer with a specific id" +
-        "\n`delete` - deletes a timer with a specific id" +
+        "\n`create` - creates a timer" +
+        "\n`delete` - deletes a timer" +
         "\n`clear` - deletes all timers" +
-        "\n`toggle` - disables or enables a timer with a specific id" +
-        "\n`view` - views a timer with a specific id" +
+        "\n`toggle` - disables or enables a timer" +
+        "\n`view` - views a timer" +
         "\n`list` - lists all timers"
     });
     pages.push({title: "**Page 5/6: Triggers Commands** `/triggers`", content: 
         "\n*note: triggers automatically send a message when it sees the trigger message*\n" +
-        "\n`create` - creates a trigger with a specific id" +
-        "\n`delete` - deletes a trigger with a specific id" +
+        "\n`create` - creates a trigger" +
+        "\n`delete` - deletes a trigger" +
         "\n`clear` - deletes all triggers" +
-        "\n`toggle` - disables or enables a trigger with a specific id" +
-        "\n`view` - views a trigger with a specific id" +
+        "\n`toggle` - disables or enables a trigger" +
+        "\n`view` - views a trigger" +
         "\n`list` - lists all triggers"
     });
     pages.push({title: "**Page 6/6: Other Commands `/`**", content: 
@@ -78,4 +80,5 @@ const execute = async (interaction) => {
         .render();
 }
 
+// exports
 module.exports = { data, execute, cooldown: 60 };

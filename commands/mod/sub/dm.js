@@ -1,8 +1,9 @@
+// imports
 const { SlashCommandSubcommandBuilder, MessageFlags } = require('discord.js');
-const { getCommandUserData } = require('../../../utils/user.js');
-const { hasPermission, botHasPermission } = require('../../../utils/permissions.js');
+const { hasPermission } = require('../../../utils/discord-utils/permissions.js');
 const { PermissionFlagsBits } = require('discord.js');
 
+// subcommand
 const data = new SlashCommandSubcommandBuilder()
     .setName('dm')
     .setDescription('Dm a message to a user')
@@ -15,6 +16,7 @@ const data = new SlashCommandSubcommandBuilder()
          .setDescription('Message to dm')
          .setRequired(true));
 
+// handler
 const handler = async (interaction) => {
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 

@@ -1,17 +1,16 @@
 // imports
-const { mentionUser } = require("../utils/user.js");
-const { mentionChannel } = require("../utils/channel.js");
-const { msToDiscordTimestamp, dateToDiscordTimestamp } = require("../utils/time.js");
-const { ensureJson, readJson } = require("../utils/files.js");
+const { mentionUser } = require("../utils/discord-data/user.js");
+const { mentionChannel } = require("../utils/discord-data/channel.js");
+const { msToDiscordTimestamp, dateToDiscordTimestamp } = require("../utils/other/time.js");
+const { ensureJson, readJson } = require("../utils/data/files.js");
 const path = require('path');
 
 // data
-ensureJson(path.resolve(__dirname, '../data/triggers.json'));
-
 let data = {};
 let cooldowns = {};
 
 async function handleTriggers(client) {
+    ensureJson(path.resolve(__dirname, '../data/triggers.json'));
     client.on('messageCreate', async (message) => {
         if (message.length > 500) return;
 
@@ -35,13 +34,15 @@ async function handleTriggers(client) {
 
             const trigger = entry.trigger;
             const input = message.content;
+
+            const words = input.toLowerCase().split(/\s+/);
             
             // entry type
             let send = false;
 
             switch (entry.matchType) {
                 case 'strict': // strict
-                    send = trigger === input.trim();
+                    send = input.toLowerCase() === trigger.toLowerCase();
                     break;
                 case 'exact': // exact
                     send = trigger === input;
@@ -60,12 +61,13 @@ async function handleTriggers(client) {
                     send = input.toLowerCase().startsWith(trigger.toLowerCase());
                     break;
                 case 'word': // word
-                    try {
-                        const escaped = trigger.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                        send = new RegExp(`(^|\\W)${escaped}(\\W|$)`, 'i').test(input);
-                    } catch(err) {
-                        console.error(err)
-                    }
+                    send = words.includes(trigger.toLowerCase());
+                    break;
+                case 'word_end': // word ends with
+                    send = words.some(word => word.endsWith(trigger.toLowerCase()));
+                    break;
+                case 'word_start': // word starts with
+                    send = words.some(word => word.startsWith(trigger.toLowerCase()));
                     break;
                 case 'normal': default: // normal
                     send = input.toLowerCase().includes(trigger.toLowerCase());
@@ -81,7 +83,6 @@ async function handleTriggers(client) {
                     newResponse = newResponse.replaceAll('{author.mention}', mentionUser(message.author));
                     newResponse = newResponse.replaceAll('{author.username}', message.author.name);
                     newResponse = newResponse.replaceAll('{author.nickname}', message.member.displayName);
-                    newResponse = newResponse.replaceAll('{author.message}', message);
                     newResponse = newResponse.replaceAll('{author.id}', message.author.id);
                     newResponse = newResponse.replaceAll('{author.avatar}', message.author.displayAvatarURL());
                     newResponse = newResponse.replaceAll('{author.tag}', message.author.tag);
@@ -96,7 +97,7 @@ async function handleTriggers(client) {
                     newResponse = newResponse.replaceAll('{guild.name}', message.guild.name);
                     newResponse = newResponse.replaceAll('{guild.memberCount}', message.guild.memberCount.toString());
 
-                    const now = Date.now();
+                    const now = new Date();
                     newResponse = newResponse.replaceAll('{time.now}', dateToDiscordTimestamp(now, 'T'));
                     newResponse = newResponse.replaceAll('{time.relative}', dateToDiscordTimestamp(now, 'R'));
                     newResponse = newResponse.replaceAll('{date.now}', dateToDiscordTimestamp(now, 'D'));

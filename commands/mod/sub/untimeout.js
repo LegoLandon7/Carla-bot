@@ -1,7 +1,9 @@
+// imports
 const { SlashCommandSubcommandBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js');
-const { getCommandUserData } = require('../../../utils/user.js');
-const { hasPermission, botHasPermission } = require('../../../utils/permissions.js');
+const { getCommandUserData } = require('../../../utils/discord-data/user.js');
+const { hasPermission, botHasPermission } = require('../../../utils/discord-utils/permissions.js');
 
+// subcommand
 const data = new SlashCommandSubcommandBuilder()
     .setName('untimeout')
     .setDescription('Removes timeout from a user')
@@ -15,6 +17,7 @@ const data = new SlashCommandSubcommandBuilder()
          .setRequired(false)
     );
 
+// handler
 const handler = async (interaction) => {
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
@@ -23,12 +26,12 @@ const handler = async (interaction) => {
 
     // data
     const userData = await getCommandUserData(interaction);
-    if (!userData) return; const { user, member, commandUser, botMember } = userData;
+    if (!userData) return; const { user, member, commandMember, botMember } = userData;
 
     const reason = interaction.options.getString('reason') || 'No reason provided';
 
     // permissions
-    if (!hasPermission(commandUser, PermissionFlagsBits.ModerateMembers))
+    if (!hasPermission(commandMember, PermissionFlagsBits.ModerateMembers))
         return interaction.editReply({ content: "❌ You need `Timeout Members` permission."});
     if (!botHasPermission(interaction.client, interaction.guild, PermissionFlagsBits.ModerateMembers))
         return interaction.editReply({ content: "❌ I don’t have permission to remove timeouts."});
@@ -38,7 +41,7 @@ const handler = async (interaction) => {
         return interaction.editReply({ content: "❌ This user is not currently timed out."});
 
     // role hierarchy
-    if (commandUser.roles.highest.position <= member.roles.highest.position)
+    if (commandMember.roles.highest.position <= member.roles.highest.position)
         return interaction.editReply({ content: "❌ User has a higher or equal role than you."});
     if (botMember.roles.highest.position <= member.roles.highest.position)
         return interaction.editReply({ content: "❌ User has a higher or equal role than me."});
@@ -63,4 +66,5 @@ const handler = async (interaction) => {
     }
 };
 
+// exports
 module.exports = { data, handler };

@@ -1,9 +1,14 @@
-const { SlashCommandSubcommandBuilder, EmbedBuilder, MessageFlags, PermissionFlagsBits } = require('discord.js');
-const { ensureJson, readJson, writeJson } = require('../../../utils/files.js');
-const { hasPermission, botHasPermission } = require('../../../utils/permissions.js');
-const { durationToMs, msToDuration } = require('../../../utils/time.js');
+// imports
+const { SlashCommandSubcommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { readJson, writeJson } = require('../../../utils/data/files.js');
+const { hasPermission } = require('../../../utils/discord-utils/permissions.js');
+const { durationToMs, msToDuration } = require('../../../utils/other/time.js');
+const { generateId } = require('../../../utils/data/ids.js');
+const { mentionChannel } = require('../../../utils/discord-data/channel.js');
+const { COLORS, createEmbed} = require('../../../utils/discord-utils/embed.js');
 const path = require('path');
 
+// subcommand
 const data = new SlashCommandSubcommandBuilder()
     .setName('create')
     .setDescription('Creates a timer')
@@ -19,10 +24,6 @@ const data = new SlashCommandSubcommandBuilder()
         o.setName('target_channel')
             .setDescription('The channel to send the message in')
             .setRequired(true))
-    .addStringOption(o => 
-        o.setName('id')
-            .setDescription('The id to refer to the timer as')
-            .setRequired(true))
     .addBooleanOption(o => 
         o.setName('sent_reset')
             .setDescription('Reset the timer when a message is sent?')
@@ -32,10 +33,13 @@ const data = new SlashCommandSubcommandBuilder()
             .setDescription('Reset the timer when this message is sent (case insensitive)')
             .setRequired(false));
 
+// handler
 const handler = async (interaction) => {
     await interaction.deferReply();
 
     // data
+    const timerData = readJson(path.resolve(__dirname, '../../../data/timers.json'));
+
     const sentReset = interaction.options.getBoolean('sent_reset') || false;
     const messageReset = interaction.options.getString('message_reset') || null;
 
@@ -43,9 +47,7 @@ const handler = async (interaction) => {
     const msTime = durationToMs(time);
 
     const channel = interaction.options.getChannel('target_channel');
-
     const response = interaction.options.getString('response');
-    const id = interaction.options.getString('id');
 
     // permissions
     if (!interaction.inGuild())
@@ -53,11 +55,10 @@ const handler = async (interaction) => {
     if (!hasPermission(interaction.member, PermissionFlagsBits.ManageMessages))
         return interaction.editReply({ content: "❌ You need `Manage Messages` permission."});
 
-    const timerData = readJson(path.resolve(__dirname, '../../../data/timers.json'));
-
     // checks
     const guildId = interaction.guild.id;
     const channelId = channel.id;
+    const id = await generateId(guildId, 'timers');
 
     if (response.length > 250 || id.length > 250)
         return interaction.editReply({ content: "❌ Max message length of 250."});
@@ -83,7 +84,21 @@ const handler = async (interaction) => {
 
     writeJson(path.resolve(path.resolve(__dirname, '../../../data/timers.json')), timerData);
 
-    return interaction.editReply({ content: `✅ Succesfully created timer with id: ${'`' + id + '`'}\n*note: timers refresh at a max limit of 5 seconds.*`});
+    // output
+    const entry = timerData[guildId][id];
+    const output = `**ID: ** \`${id}\` | *${msToDuration(entry.timeMs)}* | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'}\n` +
+        `- **Channel:** ${mentionChannel(interaction.guild.channels.cache.get(entry.channelId))}\n` +
+        `- **Reset:** ${entry.messageReset ? `[YES] : ${entry.messageReset}` : (entry.sentReset ? '[YES]' : '[NO]')}\n` +
+        `- **Response:** ${entry.response}\n` +
+        `\n*note: timers refresh at a max limit of 5 seconds.*`;
+
+    // embed
+    const embed = createEmbed(`⏲️ Succesfully created timer: **${id}**`, output,
+        COLORS.GOOD, interaction.user, false, false, null);
+
+    // message
+    return interaction.editReply({ embeds: [embed]});
 };
 
+// exports
 module.exports = { data, handler };

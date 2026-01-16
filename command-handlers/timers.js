@@ -1,12 +1,12 @@
-const { ensureJson, readJson } = require("../utils/files.js");
+const { ensureJson, readJson } = require("../utils/data/files.js");
 const path = require('path');
 
-ensureJson(path.resolve(__dirname, '../data/timers.json'));
-
+// data
 let times = {};
 let data = {};
 
 async function handleTimers(client) {
+    ensureJson(path.resolve(__dirname, '../data/timers.json'));
     data = readJson(path.resolve(__dirname, '../data/timers.json'));
 
     for (const guildId in data) {

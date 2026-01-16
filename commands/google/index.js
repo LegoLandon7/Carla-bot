@@ -1,3 +1,4 @@
+// imports
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
@@ -23,4 +24,5 @@ for (const file of subcommandFiles) {
     }
 }
 
+// exports
 module.exports = { data, subHandlers, cooldown: 60 };

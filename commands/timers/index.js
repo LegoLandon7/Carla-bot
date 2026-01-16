@@ -1,7 +1,9 @@
+// imports
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 
+// command
 const data = new SlashCommandBuilder()
     .setName('timers')
     .setDescription('Timer commands')
@@ -25,4 +27,5 @@ for (const file of subcommandFiles) {
     }
 }
 
+// exports
 module.exports = { data, subHandlers };

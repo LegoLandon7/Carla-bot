@@ -1,8 +1,10 @@
+// imports
 const { SlashCommandSubcommandBuilder, MessageFlags } = require('discord.js');
-const { getCommandUserData } = require('../../../utils/user.js');
-const { hasPermission, botHasPermission } = require('../../../utils/permissions.js');
+const { getCommandUserData } = require('../../../utils/discord-data/user.js');
+const { hasPermission, botHasPermission } = require('../../../utils/discord-utils/permissions.js');
 const { PermissionFlagsBits } = require('discord.js');
 
+// subcommand
 const data = new SlashCommandSubcommandBuilder()
     .setName('ban')
     .setDescription('Ban a user')
@@ -15,6 +17,7 @@ const data = new SlashCommandSubcommandBuilder()
          .setDescription('Reason to ban')
          .setRequired(false));
 
+// handler
 const handler = async (interaction) => {
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
@@ -23,12 +26,12 @@ const handler = async (interaction) => {
 
     // data
     const userData = await getCommandUserData(interaction);
-    if (!userData) return; const { user, member, commandUser, botMember } = userData;
+    if (!userData) return; const { user, member, commandMember, botMember } = userData;
 
     const reason = interaction.options.getString('reason') || 'No reason provided';
 
     // permissions
-    if (!hasPermission(commandUser, PermissionFlagsBits.BanMembers))
+    if (!hasPermission(commandMember, PermissionFlagsBits.BanMembers))
         return interaction.editReply({ content: "❌ You need `Ban Members` permission."});
     if (!botHasPermission(interaction.client, interaction.guild, PermissionFlagsBits.BanMembers))
         return interaction.editReply({ content: "❌ I don’t have permission to ban members."});
@@ -38,7 +41,7 @@ const handler = async (interaction) => {
         return interaction.editReply({ content: "❌ User is already banned."});
 
     // role hierarchy
-    if (commandUser.roles.highest.position <= member.roles.highest.position)
+    if (commandMember.roles.highest.position <= member.roles.highest.position)
         return interaction.editReply({ content: "❌ User has higher or equal role than you."});
     if (botMember.roles.highest.position <= member.roles.highest.position)
         return interaction.editReply({ content: "❌ User has higher or equal role than me."});
@@ -51,12 +54,10 @@ const handler = async (interaction) => {
     if (user.bot)
         return interaction.editReply({ content: "❌ Cannot ban a bot."});
 
-    // dm
-    user.send(`❌ You have been banned from **${interaction.guild.name}** for: ${reason}`)
-        .catch(() => console.log(`⚠️ Could not DM ${user.tag}`));
-
     // ban
     try {
+        await user.send(`❌ You have been banned from **${interaction.guild.name}** for: ${reason}`)
+            .catch(() => console.log(`⚠️ Could not DM ${user.tag}`));
         await member.ban({ reason });
         return interaction.editReply({ content: `✅ Successfully banned ${user.tag}`});
     } catch (err) {
@@ -65,4 +66,5 @@ const handler = async (interaction) => {
     }
 };
 
+// exports
 module.exports = { data, handler };

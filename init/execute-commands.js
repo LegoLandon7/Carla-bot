@@ -1,5 +1,5 @@
 const { MessageFlags, PermissionFlagsBits } = require('discord.js');
-const { hasPermission } = require('../utils/permissions.js');
+const { hasPermission } = require('../utils/discord-utils/permissions.js');
 require('dotenv').config();
 
 // Map structure:

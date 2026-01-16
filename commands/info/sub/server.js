@@ -1,6 +1,6 @@
 const { SlashCommandSubcommandBuilder } = require('discord.js');
-const { COLORS, createEmbed } = require('../../../utils/embed.js');
-const { dateToDiscordTimestamp } = require('../../../utils/time.js');
+const { COLORS, createEmbed } = require('../../../utils/discord-utils/embed.js');
+const { dateToDiscordTimestamp } = require('../../../utils/other/time.js');
 
 const data = new SlashCommandSubcommandBuilder()
     .setName('server')

@@ -1,11 +1,11 @@
-const { SlashCommandSubcommandBuilder, EmbedBuilder, MessageFlags, PermissionFlagsBits } = require('discord.js');
-const { ensureJson, readJson, writeJson } = require('../../../utils/files.js');
-const { hasPermission, botHasPermission } = require('../../../utils/permissions.js');
-const { durationToMs, msToDuration } = require('../../../utils/time.js');
-const { COLORS, createEmbed} = require('../../../utils/embed.js');
-const { mentionChannel } = require('../../../utils/channel.js');
+// imports
+const { SlashCommandSubcommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { readJson } = require('../../../utils/data/files.js');
+const { hasPermission } = require('../../../utils/discord-utils/permissions.js');;
+const { COLORS, createEmbed} = require('../../../utils/discord-utils/embed.js');
 const path = require('path');
 
+// subcommand
 const data = new SlashCommandSubcommandBuilder()
     .setName('view')
     .setDescription('Views a created trigger')
@@ -14,14 +14,9 @@ const data = new SlashCommandSubcommandBuilder()
             .setDescription('The id of the trigger to view')
             .setRequired(true));
 
+// subcommand
 const handler = async (interaction) => {
     await interaction.deferReply();
-
-    // permissions
-    if (!interaction.inGuild())
-        return interaction.editReply({ content: "❌ This command can only be used in servers." });
-    if (!hasPermission(interaction.member, PermissionFlagsBits.ManageMessages))
-        return interaction.editReply({ content: "❌ You need `Manage Messages` permission."});
 
     // data
     const triggerData = readJson(path.resolve(__dirname, '../../../data/triggers.json'));
@@ -32,22 +27,30 @@ const handler = async (interaction) => {
     const guildTriggers = triggerData[guildId];
 
     const entry = guildTriggers[id];
-    if (!entry)
-        return interaction.editReply({ content: `⚠️ no trigger found with id ${'`' + id + '`'}` });
 
-    const output = `${'`' + id + '`'} | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'}\n` +
+    // permissions
+    if (!interaction.inGuild())
+        return interaction.editReply({ content: "❌ This command can only be used in servers." });
+    if (!hasPermission(interaction.member, PermissionFlagsBits.ManageMessages))
+        return interaction.editReply({ content: "❌ You need `Manage Messages` permission."});
+    if (!entry)
+        return interaction.editReply({ content: `⚠️ no trigger found with id \`${id}\`` });
+
+    // output
+    const output = `**ID: **\`${id}\` | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'}\n` +
         `- **Trigger:** ${entry.trigger}\n` +
         `- **Response:** ${entry.response}\n` +
         `- **Match Type:** [${entry.matchType.toUpperCase()}]\n` +
         `- **Response Type:** [${entry.responseType.toUpperCase()}]`;
 
-    if (Object.keys(guildTriggers).length > 10) simplified = true;
-
+    // embed
     let embed = createEmbed(`⚡ Trigger: **${id}**`, output,
-        COLORS.INFO, interaction.user, false, false, null );
+        COLORS.INFO, interaction.user, false, false, null);
 
+    // message
     try { await interaction.editReply({ embeds: [embed] }); }
     catch (err) { await interaction.editReply({ content: "⚠️ Something went wrong"}); }
 }
 
+// exports
 module.exports = { data, handler };

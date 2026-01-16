@@ -1,7 +1,7 @@
 const { SlashCommandSubcommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
-const { COLORS, createEmbed} = require('../../../utils/embed.js');
-const { getRoles } = require('../../../utils/role.js');
-const { dateToDiscordTimestamp } = require('../../../utils/time.js');
+const { COLORS, createEmbed} = require('../../../utils/discord-utils/embed.js');
+const { getRoles } = require('../../../utils/discord-data/role.js');
+const { dateToDiscordTimestamp } = require('../../../utils/other/time.js');
 
 const data = new SlashCommandSubcommandBuilder()
     .setName('user')

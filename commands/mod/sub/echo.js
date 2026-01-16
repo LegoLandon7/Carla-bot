@@ -1,6 +1,6 @@
 const { SlashCommandSubcommandBuilder, MessageFlags } = require('discord.js');
-const { getCommandUserData } = require('../../../utils/user.js');
-const { hasPermission, botHasPermission } = require('../../../utils/permissions.js');
+const { getCommandUserData } = require('../../../utils/discord-data/user.js');
+const { hasPermission, botHasPermission } = require('../../../utils/discord-utils/permissions.js');
 const { PermissionFlagsBits } = require('discord.js');
 
 const data = new SlashCommandSubcommandBuilder()

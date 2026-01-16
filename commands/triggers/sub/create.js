@@ -1,23 +1,22 @@
-const { SlashCommandSubcommandBuilder, EmbedBuilder, MessageFlags, PermissionFlagsBits } = require('discord.js');
-const { ensureJson, readJson, writeJson } = require('../../../utils/files.js');
-const { hasPermission, botHasPermission } = require('../../../utils/permissions.js');
-const { durationToMs, msToDuration } = require('../../../utils/time.js');
+// imports
+const { SlashCommandSubcommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { readJson, writeJson } = require('../../../utils/data/files.js');
+const { hasPermission} = require('../../../utils/discord-utils/permissions.js');
+const { generateId } = require('../../../utils/data/ids.js');
+const { COLORS, createEmbed} = require('../../../utils/discord-utils/embed.js');
 const path = require('path');
 
+// subcommand
 const data = new SlashCommandSubcommandBuilder()
     .setName('create')
     .setDescription('Creates a trigger')
     .addStringOption(o => 
         o.setName('trigger')
-            .setDescription('The text to reply to (case insensitive)')
+            .setDescription('The text to reply to (case insensitive) (if regex -> use double backslash)')
             .setRequired(true))
     .addStringOption(o => 
         o.setName('response')
             .setDescription('The message to reply to the trigger with')
-            .setRequired(true))
-    .addStringOption(o => 
-        o.setName('id')
-            .setDescription('The id to refer to the trigger as')
             .setRequired(true))
     .addStringOption(o => 
         o.setName('match_type')
@@ -27,9 +26,11 @@ const data = new SlashCommandSubcommandBuilder()
                 { name: 'Strict', value: 'strict' },
                 { name: 'Exact', value: 'exact' },
                 { name: 'Regex', value: 'regex' },
-                { name: 'Ends end', value: 'ends' },
+                { name: 'Ends with', value: 'ends' },
                 { name: 'Starts with', value: 'starts' },
-                { name: 'Word', value: 'word' }
+                { name: 'Word', value: 'word' },
+                { name: 'Word ends with', value: 'word_end' },
+                { name: 'Word starts with', value: 'word_start' }
             ).setRequired(false))
     .addStringOption(o => 
         o.setName('response_type')
@@ -40,13 +41,15 @@ const data = new SlashCommandSubcommandBuilder()
                 { name: 'Reply', value: 'reply' }
             ).setRequired(false))
 
+// subcommand
 const handler = async (interaction) => {
     await interaction.deferReply();
 
     // data
+    const triggerData = readJson(path.resolve(__dirname, '../../../data/triggers.json'));
+
     const response = interaction.options.getString('response');
     const trigger = interaction.options.getString('trigger');
-    const id = interaction.options.getString('id');
 
     const matchType = interaction.options.getString('match_type') || 'normal';
     const responseType = interaction.options.getString('response_type') || 'normal';
@@ -57,15 +60,12 @@ const handler = async (interaction) => {
     if (!hasPermission(interaction.member, PermissionFlagsBits.ManageMessages))
         return interaction.editReply({ content: "❌ You need `Manage Messages` permission."});
 
-    const triggerData = readJson(path.resolve(__dirname, '../../../data/triggers.json'));
-
     // checks
     const guildId = interaction.guild.id;
+    const id = await generateId(guildId, 'triggers');
 
-    if (response.length > 250 || trigger.length > 250 || id.length > 250)
+    if (response.length > 250 || trigger.length > 250)
         return interaction.editReply({ content: "❌ Max message length of 250."});
-    if (triggerData?.[guildId]?.[id])
-        return interaction.editReply({content: "❌ A trigger with the same id already exists."});
     let sameName = false;
     for (const id in triggerData[guildId]) {
         const entry = triggerData[guildId][id];
@@ -76,20 +76,33 @@ const handler = async (interaction) => {
     if (!triggerData[guildId]) 
         triggerData[guildId] = {};
 
-    let newTrigger = trigger;
-    if (matchType === 'regex') newTrigger = trigger.replace(/\\/g, "\\\\");
-
+    // create trigger
     triggerData[guildId][id] = {
-        trigger: newTrigger,
+        trigger: trigger,
         response: response,
         enabled: true,
         matchType: matchType,
         responseType: responseType
     };
 
-    writeJson(path.resolve(path.resolve(__dirname, '../../../data/triggers.json')), triggerData);
+    writeJson(path.resolve(__dirname, '../../../data/triggers.json'), triggerData);
 
-    return interaction.editReply({ content: `✅ Succesfully created trigger with id: ${'`' + id + '`'}${sameName ? '\nnote: *A trigger with the same name already exists, the order the triggers were made take precedence*' : '\nnote: *triggers have a cooldown of 5 seconds.*'}`});
+    // output
+    const entry = triggerData[guildId][id];
+    const output = `**ID: **\`${id}\` | ${entry.enabled ? '[ENABLED]' : '[DISABLED]'}\n` +
+        `- **Trigger:** ${entry.trigger}\n` +
+        `- **Response:** ${entry.response}\n` +
+        `- **Match Type:** [${entry.matchType.toUpperCase()}]\n` +
+        `- **Response Type:** [${entry.responseType.toUpperCase()}]\n` +
+        `${sameName ? '\nnote: *A trigger with the same name already exists, the order the triggers were made take precedence*' : '\nnote: *triggers have a cooldown of 5 seconds.*'}`;
+
+    // embed
+    let embed = createEmbed(`⚡ Succesfully created trigger: **${id}**`, output,
+        COLORS.GOOD, interaction.user, false, false, null);
+
+    // message
+    return interaction.editReply({ embeds: [embed]});
 };
 
+// exports
 module.exports = { data, handler };

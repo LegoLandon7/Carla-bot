@@ -1,7 +1,7 @@
 const { SlashCommandSubcommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
-const { COLORS, createEmbed} = require('../../../utils/embed.js');
-const { dateToDiscordTimestamp } = require('../../../utils/time.js');
-const { fetchMembers } = require('../../../utils/fetch.js');
+const { COLORS, createEmbed} = require('../../../utils/discord-utils/embed.js');
+const { dateToDiscordTimestamp } = require('../../../utils/other/time.js');
+const { fetchMembers } = require('../../../utils/discord-utils/fetch.js');
 
 const data = new SlashCommandSubcommandBuilder()
     .setName('channel')
