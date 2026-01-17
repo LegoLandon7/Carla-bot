@@ -25,21 +25,39 @@
 **Custom Variables:**
 
 {author.mention} – mentions message author
+
 {author.username} – author’s username
+
 {author.nickname} – author’s server nickname
+
 {author.id} – author’s user ID
+
 {author.avatar} – author’s avatar URL
+
 {author.tag} – author’s Discord tag
+
 {message.content} – message text content
+
 {message.length} – message character count
+
 {message.id} – message ID
+
 {channel.name} – channel name
+
 {channel.mention} – mentions the channel
+
 {guild.name} – server name
+
 {guild.memberCount} – server member count
+
 {time.now} – current time timestamp
+
 {time.relative} – relative time timestamp
+
 {date.now} – current date timestamp
+
 {target.mention} – mentions tagged user
+
 {target.username} – tagged user’s username
+
 {trigger} – used trigger word
