@@ -21,7 +21,7 @@ const execute = async (interaction) => {
         "\n`help` - explains every command"
     });
     pages.push({title: "**Page 2/6: Information Commands** `/info`", content: 
-        "\n\n`nbot` - gets information about this bot" +
+        "\n\n`bot` - gets information about this bot" +
         "\n`user` - gets information about a specific user" +
         "\n`channel` - gets information about a specific channel" +
         "\n`role` - gets information about a specific role" +
@@ -41,7 +41,8 @@ const execute = async (interaction) => {
         "\n`dm` - sends a message to a certain user in dms"
     });
     pages.push({title: "**Page 4/6: Timer Commands** `/timers`", content: 
-        "\n*note: timers automatically send messages in channels at certain intervals*\n" +
+        "\n*note: timers automatically send messages in channels at certain intervals*" +
+        "\n[Trigger Docs](https://github.com/LegoLandon7/Carla-bot/blob/main/docs/triggers.md)\n" +
         "\n`create` - creates a timer" +
         "\n`delete` - deletes a timer" +
         "\n`clear` - deletes all timers" +
