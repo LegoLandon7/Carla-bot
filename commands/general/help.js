@@ -12,15 +12,24 @@ const data = new SlashCommandBuilder()
 const execute = async (interaction) => {
     await interaction.deferReply();
 
+    const gitURL = 'https://github.com/LegoLandon7/Carla-bot';
+    const inviteURL = 'https://discord.com/oauth2/authorize?client_id=1445762036087914677&permissions=8&integration_type=0&scope=bot';
+    const webURL = 'https://thellego.dev/bots/carla-bot/';
+    const supportURL = 'https://discord.gg/w3QtjkSDMX';
+
     // build pages
     let pages = [];
 
-    pages.push({title: "**Page 1/6: General Commands** `/`", content: 
+    pages.push({title: "**Page 1/7: Bot Info**", content: 
+        `\n**- Links:** [Website](${webURL}) - [Github](${gitURL}) - [Invite](${inviteURL}) - [Support](${supportURL})\n` +
+        "- This bot is owned and ran by `legomaster_01`"
+    });
+    pages.push({title: "**Page 2/7: General Commands** `/`", content: 
         "\n*note: these commands don't require a main command*\n" +
         "\n`ping` - gets the ping of the bot" +
         "\n`help` - explains every command"
     });
-    pages.push({title: "**Page 2/6: Information Commands** `/info`", content: 
+    pages.push({title: "**Page 3/7: Information Commands** `/info`", content: 
         "\n\n`bot` - gets information about this bot" +
         "\n`user` - gets information about a specific user" +
         "\n`channel` - gets information about a specific channel" +
@@ -28,7 +37,7 @@ const execute = async (interaction) => {
         "\n`server` - gets information about a specific server" +
         "\n`avatar` - gets the avatar of a specific user"
     });
-    pages.push({title: "**Page 3/6: Moderation Commands** `/mod`", content: 
+    pages.push({title: "**Page 4/7: Moderation Commands** `/mod`", content: 
         "\n*note: user inputs search for closest match, through user id, or mention*\n" +
         "\n`ban` - bans a user" +
         "\n`timeout` - times out a user" +
@@ -40,7 +49,7 @@ const execute = async (interaction) => {
         "\n`echo` - sends a message in a certain channel" +
         "\n`dm` - sends a message to a certain user in dms"
     });
-    pages.push({title: "**Page 4/6: Timer Commands** `/timers`", content: 
+    pages.push({title: "**Page 5/7: Timer Commands** `/timers`", content: 
         "\n*note: timers automatically send messages in channels at certain intervals*" +
         "\n`create` - creates a timer" +
         "\n`delete` - deletes a timer" +
@@ -49,7 +58,7 @@ const execute = async (interaction) => {
         "\n`view` - views a timer" +
         "\n`list` - lists all timers"
     });
-    pages.push({title: "**Page 5/6: Triggers Commands** `/triggers`", content: 
+    pages.push({title: "**Page 6/7: Triggers Commands** `/triggers`", content: 
         "\n*note: triggers automatically send a message when it sees the trigger message*\n" +
         "\n`create` - creates a trigger" +
         "\n`delete` - deletes a trigger" +
@@ -58,7 +67,7 @@ const execute = async (interaction) => {
         "\n`view` - views a trigger" +
         "\n`list` - lists all triggers"
     });
-    pages.push({title: "**Page 6/6: Other Commands `/`**", content: 
+    pages.push({title: "**Page 7/7: Other Commands `/`**", content: 
         "\n*note:these commands are an assortment of  fun and useful commands*\n" +
         "\n`google search` - searches google for a query" +
         "\n`gpt prompt` -askes chatGPT a prompt" +
