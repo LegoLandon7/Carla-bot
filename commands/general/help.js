@@ -42,7 +42,6 @@ const execute = async (interaction) => {
     });
     pages.push({title: "**Page 4/6: Timer Commands** `/timers`", content: 
         "\n*note: timers automatically send messages in channels at certain intervals*" +
-        "\n[Trigger Docs](https://github.com/LegoLandon7/Carla-bot/blob/main/docs/triggers.md)\n" +
         "\n`create` - creates a timer" +
         "\n`delete` - deletes a timer" +
         "\n`clear` - deletes all timers" +
