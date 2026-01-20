@@ -67,7 +67,7 @@ In the terminal use the following command to run the bot:
 
 ## WHAT THIS BOT IS FOR:
 
-This bot is mainly for me `cc_landonlego` to test out making discord bots and coding generally useful commands.
+This bot is mainly for me `legomaster_01` to test out making discord bots and coding generally useful commands.
 
 command can include:
 - ban
