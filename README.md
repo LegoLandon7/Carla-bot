@@ -78,5 +78,5 @@ command can include:
 
 ## NEED HELP?
 
-If you have any questions at all, please feel free to try to dm me on discord `cc_landonlego` or through another source.
+If you have any questions at all, please feel free to try to dm me on discord `legomaster_01` or through another source.
 These questions can be about the bot, how to clone the bot, or literally anything of the sorts.
