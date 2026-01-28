@@ -44,4 +44,4 @@ const handler = async (interaction) => {
 };
 
 // exports
-module.exports = { data, handler };
+module.exports = { data, handler }; 
