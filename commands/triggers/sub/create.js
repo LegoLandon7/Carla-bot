@@ -12,7 +12,7 @@ const data = new SlashCommandSubcommandBuilder()
     .setDescription('Creates a trigger')
     .addStringOption(o => 
         o.setName('trigger')
-            .setDescription('The text to reply to (case insensitive) (if regex -> use double backslash)')
+            .setDescription('The text to reply to (case insensitive)')
             .setRequired(true))
     .addStringOption(o => 
         o.setName('response')
